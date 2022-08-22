@@ -1,5 +1,5 @@
 const imageRoutes = require("express").Router();
-const { ImageController } = require("../controllers");
+const { ImageController } = require("../../controllers");
 
 imageRoutes.get("/", ImageController.getImage);
 imageRoutes.get("/:id", ImageController.getImageId);

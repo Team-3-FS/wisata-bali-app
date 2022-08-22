@@ -1,5 +1,5 @@
 const categoryRoutes = require("express").Router();
-const { CategoryController } = require("../controllers");
+const { CategoryController } = require("../../controllers");
 
 categoryRoutes.get("/", CategoryController.getCategory);
 categoryRoutes.get("/:id", CategoryController.getCategoryId);

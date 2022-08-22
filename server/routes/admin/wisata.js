@@ -1,5 +1,5 @@
 const wisataRoutes = require("express").Router();
-const { WisataController } = require("../controllers");
+const { WisataController } = require("../../controllers");
 
 wisataRoutes.get("/", WisataController.getWisata);
 wisataRoutes.get("/:id", WisataController.getWisataId);
