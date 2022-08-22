@@ -15,10 +15,38 @@ module.exports = (sequelize, DataTypes) => {
   }
   komenRatig.init(
     {
-      wisataId: DataTypes.INTEGER,
-      userId: DataTypes.INTEGER,
-      rating: DataTypes.FLOAT,
-      kometar: DataTypes.STRING,
+      wisataId: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            msg: `wisataId tidak boleh kosong!`,
+          },
+        },
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            msg: `userId tidak boleh kosong!`,
+          },
+        },
+      },
+      rating: {
+        type: DataTypes.FLOAT,
+        validate: {
+          notEmpty: {
+            msg: `rating tidak boleh kosong!`,
+          },
+        },
+      },
+      kometar: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `komentar tidak boleh kosong!`,
+          },
+        },
+      },
     },
     {
       sequelize,

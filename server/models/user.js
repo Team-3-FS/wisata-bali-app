@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+
+const { encryptPw } = require("../helper/bcyrpt");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
@@ -9,19 +11,55 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      user.hasMany(models.user);
       user.belongsToMany(models.wisata, { through: models.komenRatig });
     }
   }
   user.init(
     {
-      nama: DataTypes.STRING,
-      email: DataTypes.STRING,
-      pass: DataTypes.STRING,
-      level: DataTypes.STRING,
-      image: DataTypes.STRING,
+      nama: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `nama tidak boleh kosong!`,
+          },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `email tidak boleh kosong!`,
+          },
+        },
+      },
+      pass: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `pass tidak boleh kosong!`,
+          },
+        },
+      },
+      level: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `level tidak boleh kosong!`,
+          },
+        },
+      },
+      image: {
+        type: DataTypes.STRING,
+      },
     },
     {
+      hooks: {
+        beforeCreate: (user, options) => {
+          user.level = "user";
+          user.pass = encryptPw(user.pass);
+          user.image = null;
+        },
+      },
       sequelize,
       modelName: "user",
     }

@@ -9,13 +9,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      image.belongsTo(models.wisata);
+      image.belongsTo(models.wisata, {
+        foreignKey: "wisataId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   image.init(
     {
-      wisataId: DataTypes.INTEGER,
-      image: DataTypes.STRING,
+      wisataId: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            msg: `wisataId tidak boleh kosong!`,
+          },
+        },
+      },
+      image: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `image tidak boleh kosong!`,
+          },
+        },
+      },
     },
     {
       sequelize,

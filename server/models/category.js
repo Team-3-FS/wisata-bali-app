@@ -10,12 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      category.hasMany(models.wisata);
+      category.hasMany(models.wisata, {
+        foreignKey: "categoryId",
+      });
     }
   }
   category.init(
     {
-      nama: DataTypes.STRING,
+      nama: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: `nama tidak boleh kosong!`,
+          },
+        },
+      },
     },
     {
       sequelize,
