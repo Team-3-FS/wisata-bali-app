@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       wisata.belongsTo(models.category, {
         foreignKey: "categoryId",
-        onDelete: null,
+      });
+      wisata.hasMany(models.image, { foreignKey: "wisataId", onDelete: "cascade", onUpdate: "cascade" });
+      wisata.belongsToMany(models.user, {
+        through: models.komenRatig,
+        foreignKey: "wisataId",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
-      wisata.hasMany(models.image, { foreignKey: "wisataId" });
-      wisata.belongsToMany(models.user, { through: models.komenRatig });
     }
   }
   wisata.init(
@@ -63,6 +66,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks: {
+        beforeCreate: (wisata, options) => {
+          wisata.rating = 0;
+        },
+      },
       sequelize,
       modelName: "wisata",
     }

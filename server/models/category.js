@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       category.hasMany(models.wisata, {
         foreignKey: "categoryId",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       });
     }
   }

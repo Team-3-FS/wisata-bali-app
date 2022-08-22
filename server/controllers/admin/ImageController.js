@@ -1,36 +1,29 @@
-const { image, wisata } = require("../models");
+const { image, wisata } = require("../../models");
 class ImageController {
   static async getImage(req, res) {
     try {
       let result = await image.findAll({ include: [wisata] });
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async getImageId(req, res) {
     try {
       const { id } = req.params;
-      const result = await image.findOne({
-        where: { id },
-      });
-      res.json(result);
+      const result = await image.findOne({ where: { id } });
+      res.status(200).json(result);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async addImage(req, res) {
     try {
-      const { wisataId, image } = req.body;
-
-      let addImage = await image.create({
-        wisataId,
-        image,
-      });
-
-      res.json(addImage);
+      const { wisataId, images } = req.body;
+      let addImage = await image.create({ wisataId, image: images });
+      res.status(201).json(addImage);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async deleteImage(req, res) {
@@ -38,12 +31,12 @@ class ImageController {
       const { id } = req.params;
       const result = await image.destroy({ where: { id } });
       if (result !== 0) {
-        res.json({ message: `Image with id ${id} has been deleted` });
+        res.status(200).json({ message: `Image with id ${id} has been deleted` });
       } else {
-        res.json({ message: `Image can't be deleted` });
+        res.status(404).json({ message: `Image can't be deleted` });
       }
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async updateImage(req, res) {
@@ -66,7 +59,7 @@ class ImageController {
       //   });
       // }
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
 }

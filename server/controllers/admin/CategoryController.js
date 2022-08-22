@@ -1,37 +1,30 @@
-const { category } = require("../models");
+const { category } = require("../../models");
 
 class CategoryController {
   static async getCategory(req, res) {
     try {
       let categories = await category.findAll();
-
-      res.json(categories);
+      res.status(200).json(categories);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async getCategoryId(req, res) {
     try {
       const { id } = req.params;
-      const result = await category.findOne({
-        where: { id },
-      });
-      res.json(result);
+      const result = await category.findOne({ where: { id } });
+      res.status(200).json(result);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async addCategory(req, res) {
     try {
       const { nama } = req.body;
-
-      let addCategory = await category.create({
-        nama,
-      });
-
-      res.json(addCategory);
+      let addCategory = await category.create({ nama });
+      res.status(201).json(addCategory);
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async deleteCategory(req, res) {
@@ -39,37 +32,26 @@ class CategoryController {
       const { id } = req.params;
       const result = await category.destroy({ where: { id } });
       if (result !== 0) {
-        res.json({ message: `Category with id ${id} has been deleted` });
+        res.status(200).json({ message: `Category with id ${id} has been deleted` });
       } else {
-        res.json({ message: `Category can't be deleted` });
+        res.status(404).json({ message: `Category can't be deleted` });
       }
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
   static async updateCategory(req, res) {
     try {
       const { id } = req.params;
       const { nama } = req.body;
-
-      const result = await category.update(
-        {
-          nama: nama,
-        },
-        {
-          where: { id },
-        }
-      );
-
+      const result = await category.update({ nama }, { where: { id } });
       if (result[0] !== 0) {
-        res.json({ message: `Category with id ${id} has been updated` });
+        res.status(200).json({ message: `Category with id ${id} has been updated` });
       } else {
-        res.json({
-          message: `Category can't be updated`,
-        });
+        res.status(404).json({ message: `Category can't be updated` });
       }
     } catch (err) {
-      res.json(err);
+      res.status(500).json(err);
     }
   }
 }

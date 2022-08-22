@@ -7,6 +7,8 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       nama: {
         type: Sequelize.STRING,
@@ -26,6 +28,8 @@ module.exports = {
           model: "categories",
           key: "id",
         },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,

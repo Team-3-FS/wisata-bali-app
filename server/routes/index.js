@@ -1,7 +1,8 @@
 const route = require("express").Router();
 const adminRoutes = require("./admin");
+const homeRoutes = require("./home/homeRoute");
 
-route.get("/", (req, res) => res.json({ message: `home page` }));
+route.use("/", homeRoutes);
 route.use("/admin", adminRoutes);
 
 module.exports = route;

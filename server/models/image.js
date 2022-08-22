@@ -11,8 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       image.belongsTo(models.wisata, {
         foreignKey: "wisataId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       });
     }
   }
