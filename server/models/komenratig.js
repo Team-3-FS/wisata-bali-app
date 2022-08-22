@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class komenRatig extends Model {
     /**
@@ -11,16 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      komenRatig.belongsTo(models.user);
+      komenRatig.belongsTo(models.wisata);
     }
   }
-  komenRatig.init({
-    wisataId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    rating: DataTypes.FLOAT,
-    kometar: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'komenRatig',
-  });
+  komenRatig.init(
+    {
+      wisataId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      rating: DataTypes.FLOAT,
+      kometar: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "komenRatig",
+    }
+  );
   return komenRatig;
 };

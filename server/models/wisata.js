@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class wisata extends Model {
     /**
@@ -11,17 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      wisata.belongsTo(models.category);
+      wisata.hasMany(models.image);
+      wisata.belongsToMany(models.user, { through: models.komenRatig });
     }
   }
-  wisata.init({
-    nama: DataTypes.STRING,
-    alamat: DataTypes.STRING,
-    deskripsi: DataTypes.TEXT,
-    rating: DataTypes.FLOAT,
-    categoryId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'wisata',
-  });
+  wisata.init(
+    {
+      nama: DataTypes.STRING,
+      alamat: DataTypes.STRING,
+      deskripsi: DataTypes.TEXT,
+      rating: DataTypes.FLOAT,
+      categoryId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "wisata",
+    }
+  );
   return wisata;
 };
