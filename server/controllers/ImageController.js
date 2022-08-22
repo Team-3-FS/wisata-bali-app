@@ -21,13 +21,12 @@ class ImageController {
   }
   static async addImage(req, res) {
     try {
-      const { wisataId, image } = req.body;
+      const { wisataId, images } = req.body;
 
       let addImage = await image.create({
-        wisataId,
-        image,
+        wisataId: wisataId,
+        image: images,
       });
-
       res.json(addImage);
     } catch (err) {
       res.json(err);

@@ -1,9 +1,11 @@
-const { wisata } = require("../models");
+const { wisata, category, image } = require("../models");
 
 class WisataController {
   static async getWisata(req, res) {
     try {
-      let result = await wisata.findAll({});
+      let result = await wisata.findAll({
+        include: [category, image]
+      });
 
       res.json(result);
     } catch (err) {

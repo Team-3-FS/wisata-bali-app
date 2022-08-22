@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       wisata.hasMany(models.image, { foreignKey: "wisataId" });
-      wisata.belongsToMany(models.user, { through: models.komenRatig });
+      wisata.belongsToMany(models.user, { through: models.komenRatig, foreignKey: 'userId' });
     }
   }
   wisata.init(
@@ -63,6 +63,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks: {
+        beforeCreate: (wisata, options) => {
+          wisata.rating = 0
+        }
+      },
       sequelize,
       modelName: "wisata",
     }
