@@ -19,7 +19,9 @@ class ImageController {
   }
   static async addImage(req, res) {
     try {
-      const { wisataId, images } = req.body;
+      const { wisataId } = req.body;
+      const images = req.file.path;
+      // console.log(images);
       let addImage = await image.create({ wisataId, image: images });
       res.status(201).json(addImage);
     } catch (err) {

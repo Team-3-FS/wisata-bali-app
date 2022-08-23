@@ -17,6 +17,14 @@ class komenRatingController {
   }
   static async addKomenRating(req, res) {
     try {
+      const { wisataId, userId, rating, kometar } = req.body;
+      let addKomen = await komenRatig.create({
+        wisataId: wisataId,
+        userId: userId,
+        rating: rating,
+        kometar: kometar,
+      });
+      res.json(addKomen);
     } catch (err) {
       res.status(500).json(err);
     }
