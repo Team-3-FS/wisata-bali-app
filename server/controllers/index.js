@@ -4,6 +4,7 @@ const ImageController = require("./admin/ImageController");
 const KomenRatingController = require("./admin/komenRatingController");
 const UserController = require("./admin/UserController");
 const HomeController = require("./home/HomeController");
+const UsersController = require("./user/UsersController");
 
 module.exports = {
   WisataController,
@@ -12,4 +13,5 @@ module.exports = {
   KomenRatingController,
   UserController,
   HomeController,
+  UsersController,
 };
