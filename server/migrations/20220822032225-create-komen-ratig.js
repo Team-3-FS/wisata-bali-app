@@ -10,17 +10,9 @@ module.exports = {
       },
       wisataId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "wisata",
-          key: "id",
-        },
       },
       userId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
       },
       rating: {
         type: Sequelize.FLOAT,

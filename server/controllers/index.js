@@ -1,8 +1,9 @@
-const WisataController = require("./WisataController");
-const CategoryController = require("./CategoryController");
-const ImageController = require("./ImageController");
-const KomenRatingController = require("./KomenRatingController");
-const UserController = require("./UserController.js");
+const WisataController = require("./admin/WisataController");
+const CategoryController = require("./admin/CategoryController");
+const ImageController = require("./admin/ImageController");
+const KomenRatingController = require("./admin/komenRatingController");
+const UserController = require("./admin/UserController");
+const HomeController = require("./home/HomeController");
 
 module.exports = {
   WisataController,
@@ -10,4 +11,5 @@ module.exports = {
   ImageController,
   KomenRatingController,
   UserController,
+  HomeController,
 };

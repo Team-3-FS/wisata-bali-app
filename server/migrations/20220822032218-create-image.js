@@ -14,6 +14,8 @@ module.exports = {
           model: "wisata",
           key: "id",
         },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       image: {
         type: Sequelize.STRING,
