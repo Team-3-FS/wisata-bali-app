@@ -10,12 +10,25 @@ class HomeController {
       res.status(500).json(error);
     }
   }
+  static async getCategory(req, res) {
+    try {
+      let categories = await category.findAll();
+      res.status(200).json(categories);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
 
   static async getCategoryById(req, res) {
     try {
       const categoryId = +req.params.id;
-      const dataWisata = await wisata.findAll({ where: { categoryId }, include: [category, image] });
-      dataWisata.length > 0 ? res.status(200).json(dataWisata) : res.status(404).json({ message: `Not found` });
+      const dataWisata = await wisata.findAll({
+        where: { categoryId },
+        include: [category, image],
+      });
+      dataWisata.length > 0
+        ? res.status(200).json(dataWisata)
+        : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -24,9 +37,17 @@ class HomeController {
   static async detail(req, res) {
     try {
       const id = +req.params.id;
-      const resWisata = await wisata.findOne({ where: { id }, include: [category, image] });
-      const resKomentar = await komenRatig.findAll({ where: { wisataId: id }, include: [user] });
-      resWisata ? res.status(200).json({ resWisata, resKomentar }) : res.status(404).json({ message: `Not found` });
+      const resWisata = await wisata.findOne({
+        where: { id },
+        include: [category, image],
+      });
+      const resKomentar = await komenRatig.findAll({
+        where: { wisataId: id },
+        include: [user],
+      });
+      resWisata
+        ? res.status(200).json({ resWisata, resKomentar })
+        : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
