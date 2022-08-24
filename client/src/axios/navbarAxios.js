@@ -1,19 +1,19 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const URL = "http://localhost:3000/home";
+const URL = "http://localhost:3000/home/category";
 
-const getWisata = async (cb) => {
+const getCategory = async (cb) => {
   try {
-    let wisata = await axios({
+    let getCategory = await axios({
       method: "GET",
       url: URL,
     });
-    cb(wisata.data);
-    // console.log(wisata.data)
+    cb(getCategory);
+    // console.log(getCategory);
   } catch (error) {
     console.log(error);
   }
 };
 
-export { getWisata };
+export { getCategory };

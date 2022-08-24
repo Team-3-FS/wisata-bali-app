@@ -15,16 +15,17 @@ const HomePage = () => {
         <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
           {getAllWisata.map((result) => {
             const { id, nama, alamat, images, rating } = result;
-            // console.log(images)
+            // console.log(images);
             return (
               <div className="col mb-5" key={id}>
                 <div className="card h-100">
                   {/* <!-- Product image--> */}
                   <img
                     className="card-img-top"
-                    src={"localhost:3000/" + images[0].image}
+                    src={"http://localhost:3000/" + images[0].image}
+                    alt="gambar"
                   />
-                  {/* {console.log(images)} */}
+                  {console.log(images)}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
                     <div className="text-center">

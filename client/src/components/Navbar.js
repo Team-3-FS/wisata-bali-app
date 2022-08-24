@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getCategory } from "../axios/navbarAxios";
 
 const Navbar = () => {
+  const [getAllCategory, setGetAllCategory] = useState([]);
+  console.log(getAllCategory);
+
+  useEffect(() => {
+    getCategory((result) => setGetAllCategory(result.data));
+  }, []);
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -22,11 +29,39 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
+              {/* category dropdown */}
+
               <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Category
+                </a>
+                <ul className="dropdown-menu">
+                  {getAllCategory.map((result) => {
+                    const { id, nama } = result;
+                    return (
+                      <li key={id}>
+                        <a className="dropdown-item" href="#">
+                          {nama}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+
+              {/* <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle" to="#">
                   Category
                 </Link>
-              </li>
+              </li> */}
+
+              {/* end category drop down*/}
 
               <li className="nav-item">
                 <Link className="nav-link" to="/login">
