@@ -4,8 +4,8 @@ const homeRoutes = require("./home/homeRoute");
 const userRoutes = require("./user/userRoute");
 const { cekUser, cekAdmin } = require("../middlewares/cekUserStatus");
 
-route.use("/home", cekAdmin, homeRoutes);
+route.use("/home", homeRoutes);
 route.use("/admin", adminRoutes);
-route.use("/user", cekUser, userRoutes);
+route.use("/user", userRoutes);
 
 module.exports = route;

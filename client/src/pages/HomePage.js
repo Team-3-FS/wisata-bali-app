@@ -20,7 +20,11 @@ const HomePage = () => {
               <div className="col mb-5" key={id}>
                 <div className="card h-100">
                   {/* <!-- Product image--> */}
-                  <img className="card-img-top" src={images[0].image} />
+                  <img
+                    className="card-img-top"
+                    src={"localhost:3000/" + images[0].image}
+                  />
+                  {/* {console.log(images)} */}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
                     <div className="text-center">
