@@ -5,5 +5,6 @@ homeRoute.get("/", HomeController.homePage);
 homeRoute.post("/login", HomeController.login);
 homeRoute.post("/register", HomeController.register);
 homeRoute.get("/category/:id", HomeController.getCategoryById);
+homeRoute.get("/:id", HomeController.detail);
 
 module.exports = homeRoute;

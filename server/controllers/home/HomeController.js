@@ -1,12 +1,36 @@
-const { user, category, wisata } = require("../../models");
+const { user, category, wisata, image } = require("../../models");
 const { decryptPw } = require("../../helper/bcyrpt");
 
 class HomeController {
   static async homePage(req, res) {
-    res.json({ message: `Home Page` });
+    try {
+      const dataWisata = await wisata.findAll({ include: [category, image] });
+      res.status(200).json(dataWisata);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  static async getCategoryById(req, res) {}
+  static async getCategoryById(req, res) {
+    try {
+      const categoryId = +req.params.id;
+      const dataWisata = await wisata.findAll({ where: { categoryId }, include: [category, image] });
+      dataWisata.length > 0 ? res.status(200).json(dataWisata) : res.status(404).json({ message: `Not found` });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  static async detail(req, res) {
+    try {
+      const id = +req.params.id;
+      const resWisata = await wisata.findOne({ where: { id }, include: [category, image] });
+      const resKomentar = await komenRatig.findOne({ where: { wisataId: id }, include: [user] });
+      resWisata ? res.status(200).json({ resWisata, resKomentar }) : res.status(404).json({ message: `Not found` });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 
   static async login(req, res) {
     try {
