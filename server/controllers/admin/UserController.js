@@ -14,8 +14,9 @@ class UserController {
     try {
       const id = +req.params.id;
       let getUser = await user.findByPk(id);
-      getUser ? res.status(200).json(getUser) : res.status(404).json({ message: `Not found` });
-      res.status(200).json(getUser);
+      getUser
+        ? res.status(200).json(getUser)
+        : res.status(404).json({ message: `Not found` });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -38,7 +39,9 @@ class UserController {
     try {
       const id = +req.params.id;
       const delUser = await user.destroy({ where: { id } });
-      delUser === 1 ? res.status(200).json("Deleted!") : res.status(404).json("Not found!");
+      delUser === 1
+        ? res.status(200).json("Deleted!")
+        : res.status(404).json("Not found!");
     } catch (err) {
       res.status(500).json(err);
     }
@@ -48,7 +51,9 @@ class UserController {
       const id = +req.params.id;
       const { level } = req.body;
       const updUser = await user.update({ level }, { where: { id } });
-      updUser[0] === 1 ? res.status(200).json("Updated!") : res.status(404).json("Not found!");
+      updUser[0] === 1
+        ? res.status(200).json("Updated!")
+        : res.status(404).json("Not found!");
     } catch (err) {
       res.status(500).json(err);
     }

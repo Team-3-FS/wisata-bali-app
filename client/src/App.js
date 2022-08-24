@@ -1,13 +1,15 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { Navbar, MainContent } from "./components";
+import { Navbar, MainContent, Banner, Footer } from "./components";
 
 function App() {
   return (
     <div className="main-page container-fluid">
       <Navbar></Navbar>
+      <Banner></Banner>
       <MainContent></MainContent>
+      <Footer></Footer>
     </div>
   );
 }

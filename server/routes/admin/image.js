@@ -17,6 +17,5 @@ imageRoutes.get("/", ImageController.getImage);
 imageRoutes.get("/:id", ImageController.getImageId);
 imageRoutes.post("/", upload.single("images"), ImageController.addImage);
 imageRoutes.delete("/:id", ImageController.deleteImage);
-imageRoutes.put("/:id", ImageController.updateImage);
 
 module.exports = imageRoutes;

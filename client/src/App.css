@@ -20,3 +20,16 @@ body{
 .home-title{
     font-weight: bold;
 }
+
+.bg-image{
+  
+  background-image: url("./images/Background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* opacity: 50%; */
+  
+}
+
+.textBg{
+  opacity: 100%;
+}
