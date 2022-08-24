@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       });
       wisata.hasMany(models.image, {
         foreignKey: "wisataId",
-        onDelete: "cascade",
-        onUpdate: "cascade",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       });
       wisata.belongsToMany(models.user, {
         through: models.komenRatig,
