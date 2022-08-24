@@ -9,6 +9,7 @@ class UserController {
       res.status(500).json(err);
     }
   }
+
   static async getUserId(req, res) {
     try {
       const id = +req.params.id;

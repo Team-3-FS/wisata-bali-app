@@ -2,6 +2,7 @@ const userRoute = require("express").Router();
 const { UsersController } = require("../../controllers");
 const upload = require("../../middlewares/uploadImage");
 
+// userRoute.get("/", (req, res) => res.json({ message: `user` }));
 userRoute.get("/", UsersController.userPage);
 userRoute.get("/:id", UsersController.detail);
 userRoute.post("/:id", UsersController.addKomentar);
