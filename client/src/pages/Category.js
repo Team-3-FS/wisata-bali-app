@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
-import { getWisata } from "../axios/homeAxios";
+import { getCategoryId } from "../axios/homeAxios";
 
 const HomePage = () => {
-  const [getAllWisata, setGetAllWisata] = useState([]);
+  const [getIdCategory, setGetIdCategory] = useState([]);
+  const params = useParams();
 
+  //   console.log(params.id);
   useEffect(() => {
-    getWisata((result) => setGetAllWisata(result));
-  }, []);
+    getCategoryId(params.id, (result) => setGetIdCategory(result));
+  }, [params.id]);
 
   return (
     <div className="my-3">
+      <h1>
+        Category {getIdCategory.length > 0 && getIdCategory[0].category.nama}
+      </h1>
       <div className="container-fluid px-3 px-lg-5 mt-5">
         <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
-          {getAllWisata.map((result) => {
+          {getIdCategory.map((result) => {
             const { id, nama, alamat, images, rating } = result;
-            // console.log(images);
+            console.log(result);
             return (
               <div className="col mb-5" key={id}>
                 <div className="card h-100">

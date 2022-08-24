@@ -16,4 +16,18 @@ const getWisata = async (cb) => {
   }
 };
 
-export { getWisata };
+const getCategoryId = async (id, cb) => {
+  console.log(id);
+
+  try {
+    let result = await axios({
+      method: "GET",
+      url: URL + "/category/" + id,
+    });
+    cb(result.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { getWisata, getCategoryId };

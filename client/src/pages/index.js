@@ -1,5 +1,6 @@
 import HomePage from "./HomePage";
 import Login from "./Login";
 import Register from "./Register";
+import Category from "./Category";
 
-export { HomePage, Login, Register };
+export { HomePage, Login, Register, Category };

@@ -4,7 +4,7 @@ import { getCategory } from "../axios/navbarAxios";
 
 const Navbar = () => {
   const [getAllCategory, setGetAllCategory] = useState([]);
-  console.log(getAllCategory);
+  // console.log(getAllCategory);
 
   useEffect(() => {
     getCategory((result) => setGetAllCategory(result.data));
@@ -46,9 +46,9 @@ const Navbar = () => {
                     const { id, nama } = result;
                     return (
                       <li key={id}>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to={`category/${id}`}>
                           {nama}
-                        </a>
+                        </Link>
                       </li>
                     );
                   })}
