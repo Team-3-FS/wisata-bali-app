@@ -1,4 +1,4 @@
-const { user, category, wisata, image } = require("../../models");
+const { user, category, wisata, image, komenRatig } = require("../../models");
 const { decryptPw } = require("../../helper/bcyrpt");
 
 class HomeController {
@@ -25,7 +25,7 @@ class HomeController {
     try {
       const id = +req.params.id;
       const resWisata = await wisata.findOne({ where: { id }, include: [category, image] });
-      const resKomentar = await komenRatig.findOne({ where: { wisataId: id }, include: [user] });
+      const resKomentar = await komenRatig.findAll({ where: { wisataId: id }, include: [user] });
       resWisata ? res.status(200).json({ resWisata, resKomentar }) : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
@@ -62,7 +62,7 @@ class HomeController {
       res.status(500).json(err);
     }
   }
-  s;
+
   static async register(req, res) {
     try {
       const { nama, email, pass } = req.body;

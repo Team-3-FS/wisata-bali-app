@@ -13,10 +13,15 @@ class UsersController {
 
   static async detail(req, res) {
     try {
-      const id = +req.params.id;
-      const resWisata = await wisata.findOne({ where: { id }, include: [category, image] });
-      const resKomentar = await komenRatig.findOne({ where: { wisataId: id }, include: [user] });
-      resWisata ? res.status(200).json({ resWisata, resKomentar }) : res.status(404).json({ message: `Not found` });
+      const cookies = req.cookies;
+      const wisataId = +req.params.id;
+      const userId = cookies.user.id;
+      const resWisata = await wisata.findOne({ where: { id: wisataId }, include: [category, image] });
+      const resAllKomentar = await komenRatig.findAll({ where: { wisataId }, include: [user] });
+      const resUserKomentar = await komenRatig.findOne({ where: { userId, wisataId } });
+      resWisata
+        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar })
+        : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -42,6 +47,49 @@ class UsersController {
         await wisata.update({ rating: newRating }, { where: { id: wisataId } });
         res.json(addKomentar);
       }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  static async updateKomentar(req, res) {
+    try {
+      const cookies = req.cookies;
+      const wisataId = +req.params.id;
+      const userId = cookies.user.id;
+      const { rating, kometar } = req.body;
+      const updKomentar = await komenRatig.update({ rating, kometar }, { where: { wisataId, userId } });
+      if (updKomentar[0] !== 0) {
+        const jmlRating = await komenRatig.findAll({ where: { wisataId } });
+        let hasil = 0;
+        jmlRating.forEach((rat) => {
+          hasil += rat.rating;
+        });
+        const newRating = hasil / jmlRating.length;
+        await wisata.update({ rating: newRating }, { where: { id: wisataId } });
+        res.status(201).json({ message: `Updated!` });
+      } else {
+        res.status(404).json({ message: `Not found!` });
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  static async deleteKomentar(req, res) {
+    try {
+      const cookies = req.cookies;
+      const wisataId = +req.params.id;
+      const userId = cookies.user.id;
+      const delKomentar = await komenRatig.destroy({ where: { userId, wisataId } });
+      const jmlRating = await komenRatig.findAll({ where: { wisataId } });
+      let hasil = 0;
+      jmlRating.forEach((rat) => {
+        hasil += rat.rating;
+      });
+      const newRating = hasil / jmlRating.length;
+      await wisata.update({ rating: newRating }, { where: { id: wisataId } });
+      delKomentar === 1 ? res.status(200).json("Deleted!") : res.status(404).json("Not found!");
     } catch (error) {
       res.status(500).json(error);
     }
