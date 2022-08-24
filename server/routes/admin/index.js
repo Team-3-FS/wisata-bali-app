@@ -4,12 +4,13 @@ const categoryRoutes = require("./category");
 const imageRoutes = require("./image");
 const komenRatingRoutes = require("./komenRating");
 const userRoutes = require("./user");
+const { cekUser, cekAdmin } = require("../../middlewares/cekUserStatus");
 
-adminRoute.get("/", (req, res) => res.json({ message: "Home Page dashboard admin" }));
-adminRoute.use("/wisata", wisataRoutes);
-adminRoute.use("/categories", categoryRoutes);
-adminRoute.use("/images", imageRoutes);
-adminRoute.use("/komenRating", komenRatingRoutes);
-adminRoute.use("/users", userRoutes);
+adminRoute.get("/", cekAdmin, (req, res) => res.json({ message: "Home Page dashboard admin" }));
+adminRoute.use("/wisata", cekAdmin, wisataRoutes);
+adminRoute.use("/categories", cekAdmin, categoryRoutes);
+adminRoute.use("/images", cekAdmin, imageRoutes);
+adminRoute.use("/komenRating", cekAdmin, komenRatingRoutes);
+adminRoute.use("/users", cekAdmin, userRoutes);
 
 module.exports = adminRoute;
