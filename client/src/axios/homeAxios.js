@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:3000/home";
 
@@ -53,13 +54,34 @@ const loginUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Login", "Login Success", "success");
+    console.log(result)
   } catch (error) {
     Swal.fire({
       icon: "error",
-      title: "Something Wrong",
-      text: `Password and email did'nt match`,
+      title: `Error Status ${error.response.status}`,
+      text: `Email and Password didn't match`,
     });
+    console.log(error)
   }
 };
 
-export { getWisata, getCategoryId, getWisataId, loginUser };
+const regisUser = async (form,cb)=>{
+  try {
+    let result = await axios({
+      method: 'POST',
+      url: URL+'/register',
+      data: form
+    })
+    Swal.fire("Register", "Register Success", "success");
+    console.log(result)
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: `Something Wrong when register`,
+    });
+    console.log(error)
+  }
+}
+
+export { getWisata, getCategoryId, getWisataId, loginUser, regisUser };
