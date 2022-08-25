@@ -17,8 +17,8 @@ const Login = () => {
 
               {/* <!-- Email input --> */}
               <div className="form-outline mb-4 px-4 my-4">
-                <input type="email" id="loginName" className="form-control" />
-                <label className="form-label" for="loginName">
+                <input type="email" id="email" className="form-control" />
+                <label className="form-label" htmlFor="loginName">
                   Email
                 </label>
               </div>
@@ -27,10 +27,10 @@ const Login = () => {
               <div className="form-outline mb-4 px-4">
                 <input
                   type="password"
-                  id="loginPassword"
+                  id="pass"
                   className="form-control"
                 />
-                <label className="form-label" for="loginPassword">
+                <label className="form-label" htmlFor="loginPassword">
                   Password
                 </label>
               </div>
