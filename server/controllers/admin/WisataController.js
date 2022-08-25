@@ -1,4 +1,4 @@
-const { wisata } = require("../../models");
+const { wisata, image } = require("../../models");
 
 class WisataController {
   static async getWisata(req, res) {
@@ -27,6 +27,7 @@ class WisataController {
         deskripsi,
         categoryId,
       });
+      await image.create({ wisataId: addWisata.id, image: "assets/default.jpeg" });
       res.status(201).json(addWisata);
     } catch (err) {
       res.status(500).json(err);

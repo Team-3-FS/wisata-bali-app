@@ -22,6 +22,7 @@ class ImageController {
       const { wisataId } = req.body;
       const images = req.file.path;
       // console.log(images);
+      await image.destroy({ where: { wisataId, image: "assets/default.jpeg" } });
       let addImage = await image.create({ wisataId, image: images });
       res.status(201).json(addImage);
     } catch (err) {
@@ -33,9 +34,7 @@ class ImageController {
       const { id } = req.params;
       const result = await image.destroy({ where: { id } });
       if (result !== 0) {
-        res
-          .status(200)
-          .json({ message: `Image with id ${id} has been deleted` });
+        res.status(200).json({ message: `Image with id ${id} has been deleted` });
       } else {
         res.status(404).json({ message: `Image can't be deleted` });
       }
