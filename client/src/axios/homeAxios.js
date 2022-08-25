@@ -54,34 +54,34 @@ const loginUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Login", "Login Success", "success");
-    console.log(result)
+    console.log(result);
   } catch (error) {
     Swal.fire({
       icon: "error",
       title: `Error Status ${error.response.status}`,
       text: `Email and Password didn't match`,
     });
-    console.log(error)
+    console.log(error);
   }
 };
 
-const regisUser = async (form,cb)=>{
+const regisUser = async (form, cb) => {
   try {
     let result = await axios({
-      method: 'POST',
-      url: URL+'/register',
-      data: form
-    })
+      method: "POST",
+      url: URL + "/register",
+      data: form,
+    });
     Swal.fire("Register", "Register Success", "success");
-    console.log(result)
+    console.log(result);
   } catch (error) {
     Swal.fire({
       icon: "error",
       title: "Error",
       text: `Something Wrong when register`,
     });
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export { getWisata, getCategoryId, getWisataId, loginUser, regisUser };
