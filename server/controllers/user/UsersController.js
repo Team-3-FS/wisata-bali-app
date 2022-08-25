@@ -4,8 +4,9 @@ const { encryptPw } = require("../../helper/bcyrpt");
 class UsersController {
   static async userPage(req, res) {
     try {
+      const cookie = req.cookies.user;
       const dataWisata = await wisata.findAll({ include: [category, image] });
-      res.status(200).json(dataWisata);
+      res.status(200).json({ dataWisata, resUser: cookie });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -20,7 +21,7 @@ class UsersController {
       const resAllKomentar = await komenRatig.findAll({ where: { wisataId }, include: [user] });
       const resUserKomentar = await komenRatig.findOne({ where: { userId, wisataId } });
       resWisata
-        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar })
+        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar, resUser: cookies.user })
         : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
@@ -45,7 +46,7 @@ class UsersController {
         });
         const newRating = hasil / jmlRating.length;
         await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-        res.json(addKomentar);
+        res.json({ addKomentar, resUser: cookies.user });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -67,9 +68,9 @@ class UsersController {
         });
         const newRating = hasil / jmlRating.length;
         await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-        res.status(201).json({ message: `Updated!` });
+        res.status(201).json({ message: `Updated!`, resUser: cookies.user });
       } else {
-        res.status(404).json({ message: `Not found!` });
+        res.status(404).json({ message: `Not found!`, resUser: cookies.user });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -89,7 +90,9 @@ class UsersController {
       });
       const newRating = hasil / jmlRating.length;
       await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-      delKomentar === 1 ? res.status(200).json("Deleted!") : res.status(404).json("Not found!");
+      delKomentar === 1
+        ? res.status(200).json({ msg: "Deleted!", resUser: cookies.user })
+        : res.status(404).json({ msg: "Not found!", resUser: cookies.user });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -98,8 +101,9 @@ class UsersController {
   static async getProfile(req, res) {
     try {
       const id = +req.cookies.user.id;
+      const cookies = req.cookies;
       let getUser = await user.findByPk(id);
-      res.status(200).json(getUser);
+      res.status(200).json({ getUser, resUser: cookies.user });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -119,7 +123,9 @@ class UsersController {
           { nama, email, pass: encryptPass, image: images },
           { where: { id: cookies.user.id } }
         );
-        updUser[0] === 1 ? res.status(200).json("Updated!") : res.status(404).json("Not found!");
+        updUser[0] === 1
+          ? res.status(200).json({ msg: "Updated!", resUser: cookies.user })
+          : res.status(404).json({ msg: "Not found!", resUser: cookies.user });
       }
     } catch (error) {
       res.status(500).json(error);

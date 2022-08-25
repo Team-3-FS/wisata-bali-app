@@ -26,9 +26,7 @@ class HomeController {
         where: { categoryId },
         include: [category, image],
       });
-      dataWisata.length > 0
-        ? res.status(200).json(dataWisata)
-        : res.status(404).json({ message: `Not found` });
+      dataWisata.length > 0 ? res.status(200).json(dataWisata) : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -45,9 +43,7 @@ class HomeController {
         where: { wisataId: id },
         include: [user],
       });
-      resWisata
-        ? res.status(200).json({ resWisata, resKomentar })
-        : res.status(404).json({ message: `Not found` });
+      resWisata ? res.status(200).json({ resWisata, resKomentar }) : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -63,11 +59,11 @@ class HomeController {
           switch (valUser.level) {
             case "admin":
               res.cookie("user", valUser);
-              res.status(200).json({ msg: `admin!` });
+              res.status(200).json({ level: `admin` });
               break;
             case "user":
               res.cookie("user", valUser);
-              res.status(200).json({ msg: `user!` });
+              res.status(200).json({ level: `user` });
               break;
             default:
               res.status(400).json({ msg: `Akun bermasalah!` });
