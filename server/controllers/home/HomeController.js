@@ -94,6 +94,15 @@ class HomeController {
       res.status(500).json(err);
     }
   }
+
+  static async logout(req, res) {
+    try {
+      res.clearCookie("user");
+      res.status(200).json({ message: `logout` });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 }
 
 module.exports = HomeController;
