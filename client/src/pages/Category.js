@@ -28,10 +28,11 @@ const HomePage = () => {
                   {/* <!-- Product image--> */}
                   <img
                     className="card-img-top"
+                    height="150"
                     src={"http://localhost:3000/" + images[0].image}
                     alt="gambar"
                   />
-                  {console.log(images)}
+                  {/* {console.log(images)} */}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
                     <div className="text-center">
@@ -48,7 +49,10 @@ const HomePage = () => {
                   {/* <!-- Product actions--> */}
                   <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div className="text-center">
-                      <a className="btn btn-outline-dark mt-auto" href="#">
+                      <a
+                        className="btn btn-outline-dark mt-auto"
+                        href={`http://localhost:3001/wisata/` + id}
+                      >
                         See Detail
                       </a>
                     </div>

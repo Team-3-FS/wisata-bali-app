@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import { getWisata } from "../axios/homeAxios";
 
@@ -22,10 +23,11 @@ const HomePage = () => {
                   {/* <!-- Product image--> */}
                   <img
                     className="card-img-top"
+                    height="150"
                     src={"http://localhost:3000/" + images[0].image}
                     alt="gambar"
                   />
-                  {console.log(images)}
+                  {/* {console.log(images)} */}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
                     <div className="text-center">
@@ -42,9 +44,12 @@ const HomePage = () => {
                   {/* <!-- Product actions--> */}
                   <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div className="text-center">
-                      <a className="btn btn-outline-dark mt-auto" href="#">
+                      <Link
+                        className="btn btn-outline-dark mt-auto"
+                        to={`wisata/${id}`}
+                      >
                         See Detail
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

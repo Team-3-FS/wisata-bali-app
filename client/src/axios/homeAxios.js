@@ -17,12 +17,27 @@ const getWisata = async (cb) => {
 };
 
 const getCategoryId = async (id, cb) => {
-  console.log(id);
+  // console.log(id);
 
   try {
     let result = await axios({
       method: "GET",
       url: URL + "/category/" + id,
+    });
+    console.log(result.data);
+    cb(result.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getWisataId = async (id, cb) => {
+  // console.log(id);
+
+  try {
+    let result = await axios({
+      method: "GET",
+      url: URL + "/" + id,
     });
     cb(result.data);
   } catch (err) {
@@ -30,4 +45,4 @@ const getCategoryId = async (id, cb) => {
   }
 };
 
-export { getWisata, getCategoryId };
+export { getWisata, getCategoryId, getWisataId };
