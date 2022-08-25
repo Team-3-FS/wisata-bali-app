@@ -45,4 +45,21 @@ const getWisataId = async (id, cb) => {
   }
 };
 
-export { getWisata, getCategoryId, getWisataId };
+const loginUser = async (form, cb) => {
+  try {
+    let result = await axios({
+      method: "POST",
+      url: URL + "/login",
+      data: form,
+    });
+    Swal.fire("Login", "Login Success", "success");
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Something Wrong",
+      text: `Password and email did'nt match`,
+    });
+  }
+};
+
+export { getWisata, getCategoryId, getWisataId, loginUser };
