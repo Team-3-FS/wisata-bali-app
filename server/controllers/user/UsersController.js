@@ -4,10 +4,10 @@ const { encryptPw } = require("../../helper/bcyrpt");
 class UsersController {
   static async userPage(req, res) {
     try {
-      const cookies = req.cookies;
+      // const cookies = req.cookies;
       const dataWisata = await wisata.findAll({ include: [category, image] });
-      let resUser = await user.findByPk(+cookies.user.id);
-      res.status(200).json({ dataWisata, resUser });
+      // let resUser = await user.findByPk(+cookies.user.id);
+      res.status(200).json({ dataWisata});
     } catch (error) {
       res.status(500).json(error);
     }

@@ -10,8 +10,8 @@ const getWisataUser = async (cb) => {
       method: "GET",
       url: URL,
     });
-    cb(wisataUser.data);
-    console.log(wisataUser);
+    cb(wisataUser.data.dataWisata);
+    // console.log(wisataUser);
   } catch (error) {
     console.log(error);
   }

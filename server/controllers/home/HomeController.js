@@ -59,11 +59,11 @@ class HomeController {
           switch (valUser.level) {
             case "admin":
               res.cookie("user", valUser);
-              res.status(200).json({ level: `admin` });
+              res.status(200).json({valUser});
               break;
             case "user":
               res.cookie("user", valUser);
-              res.status(200).json({ level: `user` });
+              res.status(200).json({valUser});
               break;
             default:
               res.status(400).json({ msg: `Akun bermasalah!` });
