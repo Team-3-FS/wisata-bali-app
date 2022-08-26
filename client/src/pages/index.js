@@ -5,13 +5,7 @@ import Category from "./Category";
 import WisataId from "./WisataId";
 import UserHomePage from "./user/UserHomePage";
 import AdminUserPage from "./admin/AdminUserPage";
+import AdminCategoryPage from "./admin/AdminCategoryPage";
+import AdminWisataPage from "./admin/AdminWisataPage";
 
-export {
-  HomePage,
-  Login,
-  Register,
-  Category,
-  WisataId,
-  UserHomePage,
-  AdminUserPage,
-};
+export { HomePage, Login, Register, Category, WisataId, UserHomePage, AdminUserPage, AdminCategoryPage, AdminWisataPage };

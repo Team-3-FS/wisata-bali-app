@@ -8,6 +8,8 @@ import {
   WisataId,
   UserHomePage,
   AdminUserPage,
+  AdminCategoryPage,
+  AdminWisataPage,
 } from "../pages";
 
 const MainContent = () => {
@@ -32,7 +34,7 @@ const MainContent = () => {
         <Route path="user" element={<UserHomePage></UserHomePage>}></Route>
 
         {/* ADMIN PAGE */}
-        <Route path="admin" element={<AdminUserPage></AdminUserPage>}></Route>
+        <Route path="admin" element={<AdminWisataPage></AdminWisataPage>}></Route>
       </Routes>
     </div>
   );

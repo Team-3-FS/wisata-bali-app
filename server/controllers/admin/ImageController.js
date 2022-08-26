@@ -1,4 +1,5 @@
 const { image, wisata } = require("../../models");
+const Op = require("sequelize").Op;
 class ImageController {
   static async getImage(req, res) {
     try {
@@ -11,8 +12,8 @@ class ImageController {
   static async getImageId(req, res) {
     try {
       const { id } = req.params;
-      const result = await image.findOne({ where: { id } });
-      res.status(200).json(result);
+      const gambar = await image.findOne({ where: { id, image: { [Op.ne]: "assets/default.jpeg" } } });
+      gambar ? res.status(200).json({ gambar }) : res.status(404).json({ gambar });
     } catch (err) {
       res.status(500).json(err);
     }

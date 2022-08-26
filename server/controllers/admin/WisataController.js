@@ -1,9 +1,9 @@
-const { wisata, image } = require("../../models");
-
+const { wisata, category, image } = require("../../models");
+const Op = require("sequelize").Op;
 class WisataController {
   static async getWisata(req, res) {
     try {
-      let result = await wisata.findAll({});
+      let result = await wisata.findAll({ include: [category, image] });
       res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
@@ -12,7 +12,7 @@ class WisataController {
   static async getWisataId(req, res) {
     try {
       const { id } = req.params;
-      const result = await wisata.findOne({ where: { id } });
+      const result = await wisata.findOne({ include: [category, image], where: { id } });
       result ? res.status(200).json(result) : res.status(404).json(`Not found!`);
     } catch (err) {
       res.status(500).json(err);

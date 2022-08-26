@@ -32,9 +32,7 @@ class CategoryController {
       const { id } = req.params;
       const result = await category.destroy({ where: { id } });
       if (result !== 0) {
-        res
-          .status(200)
-          .json({ message: `Category with id ${id} has been deleted` });
+        res.status(200).json({ message: `Category with id ${id} has been deleted` });
       } else {
         res.status(404).json({ message: `Category can't be deleted` });
       }
@@ -48,9 +46,7 @@ class CategoryController {
       const { nama } = req.body;
       const result = await category.update({ nama }, { where: { id } });
       if (result[0] !== 0) {
-        res
-          .status(200)
-          .json({ message: `Category with id ${id} has been updated` });
+        res.status(200).json({ message: `Category with id ${id} has been updated` });
       } else {
         res.status(404).json({ message: `Category can't be updated` });
       }
