@@ -4,5 +4,14 @@ import Register from "./Register";
 import Category from "./Category";
 import WisataId from "./WisataId";
 import UserHomePage from "./user/UserHomePage";
+import AdminUserPage from "./admin/AdminUserPage";
 
-export { HomePage, Login, Register, Category, WisataId, UserHomePage };
+export {
+  HomePage,
+  Login,
+  Register,
+  Category,
+  WisataId,
+  UserHomePage,
+  AdminUserPage,
+};

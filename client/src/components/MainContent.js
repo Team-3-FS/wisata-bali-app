@@ -7,12 +7,14 @@ import {
   Category,
   WisataId,
   UserHomePage,
+  AdminUserPage,
 } from "../pages";
 
 const MainContent = () => {
   return (
     <div className="container p-3">
       <Routes>
+        {/* HOME PAGE */}
         <Route path="" element={<HomePage></HomePage>}></Route>
 
         <Route path="wisata">
@@ -26,8 +28,11 @@ const MainContent = () => {
         <Route path="category">
           <Route path=":id" element={<Category></Category>}></Route>
         </Route>
-
+        {/* USER PAGE */}
         <Route path="user" element={<UserHomePage></UserHomePage>}></Route>
+
+        {/* ADMIN PAGE */}
+        <Route path="admin" element={<AdminUserPage></AdminUserPage>}></Route>
       </Routes>
     </div>
   );
