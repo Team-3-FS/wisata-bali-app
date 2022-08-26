@@ -54,7 +54,7 @@ const loginUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Login", "Login Success", "success");
-    // console.log(result);
+    cb(result.data);
   } catch (error) {
     Swal.fire({
       icon: "error",

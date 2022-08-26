@@ -10,21 +10,20 @@ const Login = () => {
   const navigate = useNavigate();
 
   const submitHandler = () => {
-    // console.log(form);
-    //udah jadi login tapi belom redirect karena belom ada halaman user
-    navigate("/user");
-
-    loginUser(form);
+    loginUser(form, (result) => {
+      if (result.level === "user") {
+        navigate("/user");
+      } else if (result.level === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/login");
+      }
+    });
   };
   return (
     <>
       <div className="tab-content row my-2 px-5">
-        <div
-          className="tab-pane fade show active"
-          id="pills-login"
-          role="tabpanel"
-          aria-labelledby="tab-login"
-        >
+        <div className="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
           <div className="col-6 mx-auto my-2 border border-dark-0 rounded shadow">
             <div>
               <h3 className="text-center my-3 font-fams">Login</h3>
@@ -55,11 +54,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-block mb-4 text-center"
-                  onClick={() => submitHandler()}
-                >
+                <button type="submit" className="btn btn-primary btn-block mb-4 text-center" onClick={() => submitHandler()}>
                   Sign in
                 </button>
               </div>
