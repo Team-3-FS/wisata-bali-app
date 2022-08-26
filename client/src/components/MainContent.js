@@ -11,6 +11,7 @@ import {
   AdminCategoryPage,
   AdminWisataPage,
   UserWisataId,
+  AdminKomenPage,
 } from "../pages";
 
 const MainContent = () => {
@@ -34,16 +35,10 @@ const MainContent = () => {
 
         {/* USER PAGE */}
         <Route path="user" element={<UserHomePage></UserHomePage>}></Route>
-        <Route
-          path="user/wisata/:id"
-          element={<UserWisataId></UserWisataId>}
-        ></Route>
+        <Route path="user/wisata/:id" element={<UserWisataId></UserWisataId>}></Route>
 
         {/* ADMIN PAGE */}
-        <Route
-          path="admin"
-          element={<AdminWisataPage></AdminWisataPage>}
-        ></Route>
+        <Route path="admin" element={<AdminKomenPage></AdminKomenPage>}></Route>
       </Routes>
     </div>
   );

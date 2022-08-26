@@ -12,8 +12,9 @@ class WisataController {
   static async getWisataId(req, res) {
     try {
       const { id } = req.params;
-      const result = await wisata.findOne({ include: [category, image], where: { id } });
-      result ? res.status(200).json(result) : res.status(404).json(`Not found!`);
+      const resWisata = await wisata.findOne({ include: [category], where: { id } });
+      const resImage = await image.findAll({ where: { wisataId: resWisata.id } });
+      resWisata ? res.status(200).json({ resWisata, resImage }) : res.status(404).json(`Not found!`);
     } catch (err) {
       res.status(500).json(err);
     }
