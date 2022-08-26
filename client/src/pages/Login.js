@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginUser } from "../axios/homeAxios";
-import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
+  let cookies = Cookies.get("user");
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     pass: "",
   });
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (cookies !== undefined) {
+      let parsing = JSON.parse(cookies);
+      if (parsing.level === "user") {
+        navigate("/user");
+      } else if (parsing.level === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/login");
+      }
+    }
+  }, [cookies]);
 
   const submitHandler = () => {
     loginUser(form, (result) => {
@@ -23,7 +38,12 @@ const Login = () => {
   return (
     <>
       <div className="tab-content row my-2 px-5">
-        <div className="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+        <div
+          className="tab-pane fade show active"
+          id="pills-login"
+          role="tabpanel"
+          aria-labelledby="tab-login"
+        >
           <div className="col-6 mx-auto my-2 border border-dark-0 rounded shadow">
             <div>
               <h3 className="text-center my-3 font-fams">Login</h3>
@@ -54,7 +74,11 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <button type="submit" className="btn btn-primary btn-block mb-4 text-center" onClick={() => submitHandler()}>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block mb-4 text-center"
+                  onClick={() => submitHandler()}
+                >
                   Sign in
                 </button>
               </div>

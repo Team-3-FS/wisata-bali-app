@@ -10,6 +10,7 @@ import {
   AdminUserPage,
   AdminCategoryPage,
   AdminWisataPage,
+  UserWisataId,
 } from "../pages";
 
 const MainContent = () => {
@@ -30,11 +31,19 @@ const MainContent = () => {
         <Route path="category">
           <Route path=":id" element={<Category></Category>}></Route>
         </Route>
+
         {/* USER PAGE */}
         <Route path="user" element={<UserHomePage></UserHomePage>}></Route>
+        <Route
+          path="user/wisata/:id"
+          element={<UserWisataId></UserWisataId>}
+        ></Route>
 
         {/* ADMIN PAGE */}
-        <Route path="admin" element={<AdminWisataPage></AdminWisataPage>}></Route>
+        <Route
+          path="admin"
+          element={<AdminWisataPage></AdminWisataPage>}
+        ></Route>
       </Routes>
     </div>
   );

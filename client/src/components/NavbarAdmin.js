@@ -1,60 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { getCategory } from "../axios/navbarAxios";
 
-const Navbar = (props) => {
+const NavbarAdmin = (props) => {
   //get Cookies
-  const { checkCookie, isLogged } = props;
-  let parsing = checkCookie !== undefined ? JSON.parse(checkCookie) : "";
-  // console.log(parsing.level)
-  let menu;
-  if (isLogged === true) {
-    if (parsing.level === "user") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            User
-          </a>
-        </li>
-      );
-    } else if (parsing.level === "admin") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            Admin
-          </a>
-        </li>
-      );
-    } else {
-      menu = (
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to="/login"
-            state={{ loggedState: isLogged }}
-          >
-            Login
-          </Link>
-        </li>
-      );
-    }
-  } else {
-    menu = (
-      <li className="nav-item">
-        <Link
-          className="nav-link"
-          to="/login"
-          state={{ loggedState: isLogged }}
-        >
-          Login
-        </Link>
-      </li>
-    );
-  }
+  const { checkCookie } = props;
+  let data = false;
+  let parsing = "";
+  checkCookie !== undefined
+    ? (data = false) && (parsing = JSON.parse(checkCookie))
+    : (data = true);
 
   //get Category
-
   const [getAllCategory, setGetAllCategory] = useState([]);
   // console.log(getAllCategory);
 
@@ -115,12 +72,11 @@ const Navbar = (props) => {
 
               {/* end category drop down*/}
 
-              {menu}
-              {/* <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
-              </li> */}
+              <li className="nav-item">
+                <a className="nav-link" to="/login">
+                  Admin
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -129,4 +85,4 @@ const Navbar = (props) => {
   );
 };
 
-export default Navbar;
+export default NavbarAdmin;

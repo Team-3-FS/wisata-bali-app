@@ -17,11 +17,19 @@ class UsersController {
     try {
       const wisataId = +req.params.id;
       const { userId } = req.body;
-      const resWisata = await wisata.findOne({ where: { id: wisataId }, include: [category, image] });
-      const resAllKomentar = await komenRatig.findAll({ where: { wisataId }, include: [user] });
-      const resUserKomentar = await komenRatig.findOne({ where: { userId, wisataId } });
+      const resWisata = await wisata.findOne({
+        where: { id: wisataId },
+        include: [category, image],
+      });
+      const resAllKomentar = await komenRatig.findAll({
+        where: { wisataId },
+        include: [user],
+      });
+      // const resUserKomentar = await komenRatig.findOne({
+      //   where: { userId, wisataId },
+      // });
       resWisata
-        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar })
+        ? res.status(200).json({ resWisata, resAllKomentar })
         : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
@@ -34,9 +42,16 @@ class UsersController {
       const { userId, rating, kometar } = req.body;
       const valUser = await komenRatig.findOne({ where: { userId, wisataId } });
       if (valUser) {
-        res.status(200).json({ message: `User sudah menambahkan komentar di wisata ini!` });
+        res
+          .status(200)
+          .json({ message: `User sudah menambahkan komentar di wisata ini!` });
       } else {
-        const addKomentar = await komenRatig.create({ wisataId, userId, rating, kometar });
+        const addKomentar = await komenRatig.create({
+          wisataId,
+          userId,
+          rating,
+          kometar,
+        });
         const jmlRating = await komenRatig.findAll({ where: { wisataId } });
         let hasil = 0;
         jmlRating.forEach((rat) => {
@@ -55,7 +70,10 @@ class UsersController {
     try {
       const wisataId = +req.params.id;
       const { userId, rating, kometar } = req.body;
-      const updKomentar = await komenRatig.update({ rating, kometar }, { where: { wisataId, userId } });
+      const updKomentar = await komenRatig.update(
+        { rating, kometar },
+        { where: { wisataId, userId } }
+      );
       if (updKomentar[0] !== 0) {
         const jmlRating = await komenRatig.findAll({ where: { wisataId } });
         let hasil = 0;
@@ -77,7 +95,9 @@ class UsersController {
     try {
       const wisataId = +req.params.id;
       const { userId } = req.body;
-      const delKomentar = await komenRatig.destroy({ where: { userId, wisataId } });
+      const delKomentar = await komenRatig.destroy({
+        where: { userId, wisataId },
+      });
       const jmlRating = await komenRatig.findAll({ where: { wisataId } });
       let hasil = 0;
       jmlRating.forEach((rat) => {
@@ -85,7 +105,9 @@ class UsersController {
       });
       const newRating = hasil / jmlRating.length;
       await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-      delKomentar === 1 ? res.status(200).json({ msg: "Deleted!" }) : res.status(404).json({ msg: "Not found!" });
+      delKomentar === 1
+        ? res.status(200).json({ msg: "Deleted!" })
+        : res.status(404).json({ msg: "Not found!" });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -110,10 +132,17 @@ class UsersController {
       const valEmailBaru = await user.findAll({ where: { email } });
       if (valUser) {
         if (valEmailBaru.length === 0 || email === emailCookie) {
-          const updUser = await user.update({ nama, email, pass: encryptPass, image: images }, { where: { id } });
-          updUser[0] === 1 ? res.status(200).json({ msg: "Updated!" }) : res.status(404).json({ msg: "Not found!" });
+          const updUser = await user.update(
+            { nama, email, pass: encryptPass, image: images },
+            { where: { id } }
+          );
+          updUser[0] === 1
+            ? res.status(200).json({ msg: "Updated!" })
+            : res.status(404).json({ msg: "Not found!" });
         } else {
-          res.status(200).json({ message: `Email baru sudah terdaftar di aplikasi!` });
+          res
+            .status(200)
+            .json({ message: `Email baru sudah terdaftar di aplikasi!` });
         }
       } else {
         res.status(404).json({ message: `Data user tidak ada!` });

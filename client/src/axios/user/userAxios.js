@@ -17,4 +17,19 @@ const getWisataUser = async (cb) => {
   }
 };
 
-export { getWisataUser };
+const getUserWisataId = async (id, cb) => {
+  // console.log(id);
+
+  try {
+    let result = await axios({
+      method: "GET",
+      url: URL + "/wisata/" + id,
+    });
+    console.log(result.data);
+    cb(result.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { getWisataUser, getUserWisataId };
