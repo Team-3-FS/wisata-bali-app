@@ -54,7 +54,7 @@ const loginUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Login", "Login Success", "success");
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     Swal.fire({
       icon: "error",
@@ -73,7 +73,7 @@ const regisUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Register", "Register Success", "success");
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     Swal.fire({
       icon: "error",

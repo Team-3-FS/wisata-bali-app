@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { loginUser } from "../axios/homeAxios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [form, setForm] = useState({
     email: "",
     pass: "",
   });
+  const navigate = useNavigate();
+
   const submitHandler = () => {
     // console.log(form);
     //udah jadi login tapi belom redirect karena belom ada halaman user
-    loginUser(form)
+    navigate("/user");
+
+    loginUser(form);
   };
   return (
     <>
