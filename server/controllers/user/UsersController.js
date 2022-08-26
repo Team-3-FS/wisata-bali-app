@@ -7,7 +7,7 @@ class UsersController {
       // const cookies = req.cookies;
       const dataWisata = await wisata.findAll({ include: [category, image] });
       // let resUser = await user.findByPk(+cookies.user.id);
-      res.status(200).json({ dataWisata});
+      res.status(200).json({ dataWisata });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -15,16 +15,14 @@ class UsersController {
 
   static async detail(req, res) {
     try {
-      const cookies = req.cookies;
       const wisataId = +req.params.id;
-      const userId = cookies.user.id;
+      const { userId } = req.body;
       const resWisata = await wisata.findOne({ where: { id: wisataId }, include: [category, image] });
       const resAllKomentar = await komenRatig.findAll({ where: { wisataId }, include: [user] });
       const resUserKomentar = await komenRatig.findOne({ where: { userId, wisataId } });
-      let resUser = await user.findByPk(+cookies.user.id);
       resWisata
-        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar, resUser })
-        : res.status(404).json({ message: `Not found`, resUser });
+        ? res.status(200).json({ resWisata, resAllKomentar, resUserKomentar })
+        : res.status(404).json({ message: `Not found` });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -32,14 +30,11 @@ class UsersController {
 
   static async addKomentar(req, res) {
     try {
-      const cookies = req.cookies;
       const wisataId = +req.params.id;
-      const userId = cookies.user.id;
-      const { rating, kometar } = req.body;
+      const { userId, rating, kometar } = req.body;
       const valUser = await komenRatig.findOne({ where: { userId, wisataId } });
       if (valUser) {
-        let resUser = await user.findByPk(+cookies.user.id);
-        res.status(200).json({ message: `User sudah menambahkan komentar di wisata ini!`, resUser });
+        res.status(200).json({ message: `User sudah menambahkan komentar di wisata ini!` });
       } else {
         const addKomentar = await komenRatig.create({ wisataId, userId, rating, kometar });
         const jmlRating = await komenRatig.findAll({ where: { wisataId } });
@@ -48,9 +43,8 @@ class UsersController {
           hasil += rat.rating;
         });
         const newRating = hasil / jmlRating.length;
-        let resUser = await user.findByPk(+cookies.user.id);
         await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-        res.json({ addKomentar, resUser });
+        res.json({ addKomentar });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -59,10 +53,8 @@ class UsersController {
 
   static async updateKomentar(req, res) {
     try {
-      const cookies = req.cookies;
       const wisataId = +req.params.id;
-      const userId = cookies.user.id;
-      const { rating, kometar } = req.body;
+      const { userId, rating, kometar } = req.body;
       const updKomentar = await komenRatig.update({ rating, kometar }, { where: { wisataId, userId } });
       if (updKomentar[0] !== 0) {
         const jmlRating = await komenRatig.findAll({ where: { wisataId } });
@@ -72,11 +64,9 @@ class UsersController {
         });
         const newRating = hasil / jmlRating.length;
         await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-        let resUser = await user.findByPk(+cookies.user.id);
-        res.status(201).json({ message: `Updated!`, resUser });
+        res.status(201).json({ message: `Updated!` });
       } else {
-        let resUser = await user.findByPk(+cookies.user.id);
-        res.status(404).json({ message: `Not found!`, resUser });
+        res.status(404).json({ message: `Not found!` });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -85,9 +75,8 @@ class UsersController {
 
   static async deleteKomentar(req, res) {
     try {
-      const cookies = req.cookies;
       const wisataId = +req.params.id;
-      const userId = cookies.user.id;
+      const { userId } = req.body;
       const delKomentar = await komenRatig.destroy({ where: { userId, wisataId } });
       const jmlRating = await komenRatig.findAll({ where: { wisataId } });
       let hasil = 0;
@@ -96,10 +85,7 @@ class UsersController {
       });
       const newRating = hasil / jmlRating.length;
       await wisata.update({ rating: newRating }, { where: { id: wisataId } });
-      let resUser = await user.findByPk(+cookies.user.id);
-      delKomentar === 1
-        ? res.status(200).json({ msg: "Deleted!", resUser })
-        : res.status(404).json({ msg: "Not found!", resUser });
+      delKomentar === 1 ? res.status(200).json({ msg: "Deleted!" }) : res.status(404).json({ msg: "Not found!" });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -107,10 +93,9 @@ class UsersController {
 
   static async getProfile(req, res) {
     try {
-      const id = +req.cookies.user.id;
-      const cookies = req.cookies;
+      const { id } = req.body;
       let resUser = await user.findByPk(id);
-      res.status(200).json({ resUser });
+      res.status(200).json(resUser);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -118,24 +103,20 @@ class UsersController {
 
   static async updProfile(req, res) {
     try {
-      const id = +req.cookies.user.id;
-      const cookies = req.cookies;
+      const { id, nama, emailCookie, email, pass } = req.body;
       const images = req.file.path;
-      const { nama, email, pass } = req.body;
       const encryptPass = encryptPw(pass);
-      const valEmail = await user.findOne({ where: { email } });
-      if (valEmail && valEmail.email !== cookies.user.email) {
-        const resUser = await user.findByPk(id);
-        res.status(200).json({ msg: `Email sudah terdaftar!`, resUser });
+      const valUser = await user.findOne({ where: { email: emailCookie, id } });
+      const valEmailBaru = await user.findAll({ where: { email } });
+      if (valUser) {
+        if (valEmailBaru.length === 0 || email === emailCookie) {
+          const updUser = await user.update({ nama, email, pass: encryptPass, image: images }, { where: { id } });
+          updUser[0] === 1 ? res.status(200).json({ msg: "Updated!" }) : res.status(404).json({ msg: "Not found!" });
+        } else {
+          res.status(200).json({ message: `Email baru sudah terdaftar di aplikasi!` });
+        }
       } else {
-        const updUser = await user.update(
-          { nama, email, pass: encryptPass, image: images },
-          { where: { id: cookies.user.id } }
-        );
-        const resUser = await user.findByPk(id);
-        updUser[0] === 1
-          ? res.status(200).json({ msg: "Updated!", resUser })
-          : res.status(404).json({ msg: "Not found!", resUser });
+        res.status(404).json({ message: `Data user tidak ada!` });
       }
     } catch (error) {
       res.status(500).json(error);

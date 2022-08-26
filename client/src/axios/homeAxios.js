@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:3000/home";
@@ -55,8 +55,8 @@ const loginUser = async (form, cb) => {
       data: form,
     });
     Swal.fire("Login", "Login Success", "success");
-    const data = JSON.stringify(result.data.valUser)
-    Cookies.set('user', data)
+    const data = JSON.stringify(result.data.valUser);
+    Cookies.set("user", data);
     cb(result.data.valUser);
   } catch (error) {
     Swal.fire({
