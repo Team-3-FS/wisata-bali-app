@@ -23,6 +23,7 @@ const delKomentar = async (id) => {
       url: `${URL}/${id}`,
     });
     Swal.fire("Delete", "Delete Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }

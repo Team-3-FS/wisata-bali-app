@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getKomenRating, delKomentar } from "../../axios/admin/adminKomenAxios";
 
 const AdminKomenPage = () => {
+  const [getKomentar, setKomentar] = useState([]);
+  useEffect(() => {
+    getKomenRating((res) => setKomentar(res));
+  }, []);
   return (
     <div className="container-fluid">
       <div className="row">
@@ -10,8 +15,7 @@ const AdminKomenPage = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Tanggal</th>
+                  <th scope="col">No</th>
                   <th scope="col">Wisata</th>
                   <th scope="col">Pengguna</th>
                   <th scope="col">Rating</th>
@@ -20,17 +24,23 @@ const AdminKomenPage = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>
-                    <a className="btn btn-sm btn-dark">Delete</a>
-                  </td>
-                </tr>
+                {getKomentar.map((kom, index) => {
+                  const { id, wisatum, user, rating, kometar } = kom;
+                  return (
+                    <tr key={id}>
+                      <td>{index + 1}</td>
+                      <td>{wisatum.nama}</td>
+                      <td>{user.nama}</td>
+                      <td>{rating}</td>
+                      <td>{kometar}</td>
+                      <td>
+                        <a className="btn btn-sm btn-dark" onClick={() => delKomentar(id)}>
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -22,15 +22,6 @@ const AdminCategoryPage = () => {
   const [catId, setCatId] = useState();
   const [formEdit, setFormEdit] = useState({});
 
-  // useEffect(() => {
-  //   let id = catId;
-  //   getCategoryById(id, (result) => {
-  //     setFormEdit({
-  //       nama: result.nama,
-  //     });
-  //   });
-  // }, []);
-
   const btnEdit = (id) => {
     getCategoryById(id, (res) => {
       setCatId(id);
@@ -39,7 +30,7 @@ const AdminCategoryPage = () => {
   };
 
   const submitEdit = () => {
-    console.log(formEdit);
+    // console.log(formEdit);
     updCategory(catId, formEdit);
   };
 
@@ -61,8 +52,8 @@ const AdminCategoryPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((user, index) => {
-                  const { id, nama } = user;
+                {categories.map((cat, index) => {
+                  const { id, nama } = cat;
                   return (
                     <tr key={id}>
                       <td>{index + 1}</td>

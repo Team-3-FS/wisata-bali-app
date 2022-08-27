@@ -38,7 +38,7 @@ const MainContent = () => {
         <Route path="user/wisata/:id" element={<UserWisataId></UserWisataId>}></Route>
 
         {/* ADMIN PAGE */}
-        <Route path="admin" element={<AdminCategoryPage></AdminCategoryPage>}></Route>
+        <Route path="admin" element={<AdminWisataPage></AdminWisataPage>}></Route>
       </Routes>
     </div>
   );

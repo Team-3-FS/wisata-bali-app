@@ -1,7 +1,12 @@
-import React from "react";
+import { getWisatas, getWisataById, addWisata, delWisata, updWisata } from "../../axios/admin/adminWisataAxios";
+import React, { useState, useEffect } from "react";
 import { Rating } from "react-simple-star-rating";
 
 const AdminWisataPage = () => {
+  const [dataWisata, setDataWisata] = useState([]);
+  useEffect(() => {
+    getWisatas((res) => setDataWisata(res));
+  }, []);
   return (
     <div className="container-fluid">
       <div className="row">
@@ -23,23 +28,30 @@ const AdminWisataPage = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>
-                    <a data-bs-toggle="modal" data-bs-target="#detail">
-                      Pantai Sadewa
-                    </a>
-                  </td>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>Mark</td>
-                  <td>
-                    <a className="btn btn-sm btn-dark mx-1 " data-bs-toggle="modal" data-bs-target="#edit">
-                      Edit
-                    </a>
-                    <a className="btn btn-sm btn-dark">Delete</a>
-                  </td>
-                </tr>
+                {dataWisata.map((wis, index) => {
+                  const { id, nama, alamat, rating } = wis;
+                  return (
+                    <tr key={id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#detail">
+                          {nama}
+                        </a>
+                      </td>
+                      <td>{alamat}</td>
+                      <td>{rating}</td>
+                      <td>{wis.category.nama}</td>
+                      <td>
+                        <a className="btn btn-sm btn-dark mx-1 " data-bs-toggle="modal" data-bs-target="#edit">
+                          Edit
+                        </a>
+                        <a className="btn btn-sm btn-dark" onClick={() => delWisata(id)}>
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
