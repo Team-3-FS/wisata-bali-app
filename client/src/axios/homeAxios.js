@@ -54,6 +54,7 @@ const loginUser = async (form, cb) => {
       url: URL + "/login",
       data: form,
     });
+    window.location.reload(false);
     Swal.fire("Login", "Login Success", "success");
     const data = JSON.stringify(result.data.valUser);
     Cookies.set("user", data);
@@ -87,4 +88,42 @@ const regisUser = async (form, cb) => {
   }
 };
 
-export { getWisata, getCategoryId, getWisataId, loginUser, regisUser };
+const logoutUser = async () => {
+  try {
+    Swal.fire({
+      title: "Logout",
+      text: "Are You Sure Want to Logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Cookies.remove("user");
+        Swal.fire(
+          "Logout!",
+          "You Has Been Logout, Wait a Second We Move You to Home Page",
+          "success"
+        );
+        window.location.reload(false);
+      }
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: `Something Wrong When Logout`,
+    });
+    console.log(error);
+  }
+};
+
+export {
+  getWisata,
+  getCategoryId,
+  getWisataId,
+  loginUser,
+  regisUser,
+  logoutUser,
+};

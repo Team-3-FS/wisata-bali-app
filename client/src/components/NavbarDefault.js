@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCategory } from "../axios/navbarAxios";
-import Cookies from "js-cookie";
-import { logoutUser } from "../axios/homeAxios";
 
-const NavbarAdmin = () => {
+const NavbarDefault = () => {
   //get Category
   const [getAllCategory, setGetAllCategory] = useState([]);
   // console.log(getAllCategory);
 
-  let navigate = useNavigate();
   useEffect(() => {
     getCategory((result) => setGetAllCategory(result.data));
   }, []);
-
-  const logoutHandler = async () => {
-    logoutUser();
-    navigate('/')
-  };
-
   return (
     <>
       <Link className="navbar-brand" to="/">
-        Wisata Bali Apps For Admin
+        Wisata Bali Apps For Default
       </Link>
       <button
         className="navbar-toggler"
@@ -63,9 +54,9 @@ const NavbarAdmin = () => {
             </ul>
           </li>
           <li className="nav-item">
-            <a onClick={() => logoutHandler()} className="nav-link">
-              Logout
-            </a>
+            <Link className="nav-link" to="/login">
+              Login
+            </Link>
           </li>
         </ul>
       </div>
@@ -73,4 +64,4 @@ const NavbarAdmin = () => {
   );
 };
 
-export default NavbarAdmin;
+export default NavbarDefault;

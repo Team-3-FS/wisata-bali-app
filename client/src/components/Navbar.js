@@ -1,57 +1,32 @@
+import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getCategory } from "../axios/navbarAxios";
+import NavbarUser from "./NavbarUser";
+import NavbarAdmin from "./NavbarAdmin";
+import NavbarDefault from "./NavbarDefault";
 
 const Navbar = (props) => {
   //get Cookies
-  const { checkCookie, isLogged } = props;
-  let parsing = checkCookie !== undefined ? JSON.parse(checkCookie) : "";
+  let checkCookie = Cookies.get("user");
+  // let parsing = checkCookie !== undefined ? JSON.parse(checkCookie) : "";
   // console.log(parsing.level)
-  let menu;
-  if (isLogged === true) {
-    if (parsing.level === "user") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            User
-          </a>
-        </li>
-      );
-    } else if (parsing.level === "admin") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            Admin
-          </a>
-        </li>
-      );
-    } else {
-      menu = (
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to="/login"
-            state={{ loggedState: isLogged }}
-          >
-            Login
-          </Link>
-        </li>
-      );
+
+  const [menu, setMenu] = useState(<NavbarDefault></NavbarDefault>);
+
+  useEffect(() => {
+    if (checkCookie !== undefined) {
+      let parsing = JSON.parse(checkCookie);
+      if (parsing.level === "user") {
+        setMenu(<NavbarUser></NavbarUser>);
+      } else if (parsing.level === "admin") {
+        setMenu(<NavbarAdmin></NavbarAdmin>);
+      } else {
+        setMenu(<NavbarDefault></NavbarDefault>);
+      }
     }
-  } else {
-    menu = (
-      <li className="nav-item">
-        <Link
-          className="nav-link"
-          to="/login"
-          state={{ loggedState: isLogged }}
-        >
-          Login
-        </Link>
-      </li>
-    );
-  }
+  }, [checkCookie]);
 
   //get Category
 
@@ -64,66 +39,7 @@ const Navbar = (props) => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-light">
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            Wisata Bali Apps
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              {/* category dropdown */}
-
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Category
-                </a>
-                <ul className="dropdown-menu">
-                  {getAllCategory.map((result) => {
-                    const { id, nama } = result;
-                    return (
-                      <li key={id}>
-                        <Link className="dropdown-item" to={`category/${id}`}>
-                          {nama}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-
-              {/* <li className="nav-item dropdown">
-                <Link className="nav-link dropdown-toggle" to="#">
-                  Category
-                </Link>
-              </li> */}
-
-              {/* end category drop down*/}
-
-              {menu}
-              {/* <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
-              </li> */}
-            </ul>
-          </div>
-        </div>
+        <div className="container">{menu}</div>
       </nav>
     </div>
   );
