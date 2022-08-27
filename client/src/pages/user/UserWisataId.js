@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import { getUserWisataId } from "../../axios/user/userAxios";
 
@@ -7,6 +7,7 @@ const UserWisataId = () => {
   const [getResKomentar, setgetResKomentar] = useState([]);
   const [getResWisata, setgetResWisata] = useState([]);
   const [getImage, setgetImage] = useState([]);
+  const [getKomenId, setGetKomenId] = useState([]);
   const params = useParams();
   // console.log(getUserWisataId);
 
@@ -26,7 +27,13 @@ const UserWisataId = () => {
     );
   }, [params.id]);
 
-  // console.log(getImage);
+  useEffect(() => {
+    getUserWisataId(params.id, (result) =>
+      setGetKomenId(result.resUserKomentar)
+    );
+  }, [params.id]);
+
+  console.log(getKomenId);
 
   return (
     <div>
@@ -86,10 +93,36 @@ const UserWisataId = () => {
           <Rating initialValue={getResWisata.rating} readonly size="25px" />
         </div>
         {/* <!-- Product price--> */}
-        {getResWisata.deskripsi}
+        <p>{getResWisata.deskripsi}</p>
+
+        <div className="container-fluid px-3 px-lg-5 mt-5">
+          <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 row-center">
+            <div className="col mb-5">
+              <div className="card h-100">
+                <div className="card-body p-4">
+                  <div className="text-center">
+                    <h5 className="fw-bolder">Ulasan Mu</h5>
+                    <div className="d-flex justify-content-center">
+                      <Rating
+                        initialValue={getKomenId.rating}
+                        readonly
+                        size="25px"
+                      />
+                    </div>
+                    <p>{getKomenId.kometar}</p>
+                    <Link className="btn btn-outline-dark mt-auto" to={"/"}>
+                      + Ulasan
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="container-fluid px-3 px-lg-5 mt-5">
+        <h3>Ringkasan Ulasan</h3>
         <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
           {getResKomentar.length > 0 ? (
             getResKomentar.map((result) => {
