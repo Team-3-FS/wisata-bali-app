@@ -48,6 +48,7 @@ const delUser = async (id) => {
       url: `${URL}/${id}`,
     });
     Swal.fire("Delete", "Delete Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }
@@ -61,6 +62,7 @@ const updUser = async (id, form) => {
       data: form,
     });
     Swal.fire("Update", "Update Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }

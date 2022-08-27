@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminUserPage = () => {
   const navigate = useNavigate();
+  // ! bagian tampil user
   // tampilkan user
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -19,8 +20,29 @@ const AdminUserPage = () => {
 
   const submitAdd = () => {
     addUser(formAdd);
+  };
+
+  // ! bagian edit user
+  // edit user
+  const [user, setUser] = useState({});
+  const [userId, setUserId] = useState();
+  const [formEdit, setFormEdit] = useState();
+
+  const btnEdit = (id) => {
+    getUserById(id, (res) => {
+      setUser(res);
+      setUserId(id);
+      setFormEdit({ level: res.level });
+    });
+  };
+
+  const submitEdit = () => {
+    updUser(userId, formEdit);
     navigate("/admin");
   };
+
+  // TODO bagian hapus user belum otomatis reload ulang pagenya
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -50,10 +72,17 @@ const AdminUserPage = () => {
                       <td>{email}</td>
                       <td>{level}</td>
                       <td>
-                        <a className="btn btn-sm btn-dark mx-1 " data-bs-toggle="modal" data-bs-target="#edit">
+                        <a
+                          className="btn btn-sm btn-dark mx-1 "
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit"
+                          onClick={() => btnEdit(id)}
+                        >
                           Edit
                         </a>
-                        <a className="btn btn-sm btn-dark">Delete</a>
+                        <a className="btn btn-sm btn-dark" onClick={() => delUser(id)}>
+                          Delete
+                        </a>
                       </td>
                     </tr>
                   );
@@ -136,38 +165,67 @@ const AdminUserPage = () => {
               </h5>
             </div>
             <div className="modal-body px-3 py-4">
-              <form>
-                <div className="mb-3">
-                  <label htmlFor="ename" className="form-label">
-                    Nama
-                  </label>
-                  <input type="text" required className="form-control" id="ename" placeholder="Masukkan nama..." />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="eemail" className="form-label">
-                    Email
-                  </label>
-                  <input type="text" required className="form-control" id="eemail" placeholder="name@example.com" />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="pass" className="form-label">
-                    Level
-                  </label>
-                  <select className="form-select" required aria-label="Default select example">
-                    <option defaultValue={""}>Pilih level...</option>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
-                </div>
-                <div className="mb-3 py-2">
-                  <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-sm btn-dark">
-                    Ubah
-                  </button>
-                </div>
-              </form>
+              {/* <form> */}
+              <div className="mb-3">
+                <label htmlFor="ename" className="form-label">
+                  Nama
+                </label>
+                <input
+                  type="text"
+                  value={user.nama}
+                  required
+                  readOnly
+                  className="form-control"
+                  id="ename"
+                  placeholder="Masukkan nama..."
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="eemail" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  value={user.email}
+                  required
+                  readOnly
+                  className="form-control"
+                  id="eemail"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="pass" className="form-label">
+                  Level
+                </label>
+                <select
+                  className="form-select"
+                  required
+                  aria-label="Default select example"
+                  onChange={(e) => setFormEdit({ level: e.target.value })}
+                >
+                  {user.level === "user" ? (
+                    <>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </>
+                  )}
+                </select>
+              </div>
+              <div className="mb-3 py-2">
+                <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
+                  Close
+                </button>
+                <button type="submit" className="btn btn-sm btn-dark" onClick={() => submitEdit()}>
+                  Ubah
+                </button>
+              </div>
+              {/* </form> */}
             </div>
           </div>
         </div>

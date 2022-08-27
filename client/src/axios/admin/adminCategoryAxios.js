@@ -61,6 +61,7 @@ const updCategory = async (id, form) => {
       data: form,
     });
     Swal.fire("Update", "Update Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }
