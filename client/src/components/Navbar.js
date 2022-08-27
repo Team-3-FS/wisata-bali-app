@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -5,53 +6,53 @@ import { getCategory } from "../axios/navbarAxios";
 
 const Navbar = (props) => {
   //get Cookies
-  const { checkCookie, isLogged } = props;
+  let checkCookie = Cookies.get('user')
   let parsing = checkCookie !== undefined ? JSON.parse(checkCookie) : "";
   // console.log(parsing.level)
   let menu;
-  if (isLogged === true) {
-    if (parsing.level === "user") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            User
-          </a>
-        </li>
-      );
-    } else if (parsing.level === "admin") {
-      menu = (
-        <li className="nav-item">
-          <a className="nav-link" to="/login">
-            Admin
-          </a>
-        </li>
-      );
-    } else {
-      menu = (
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            to="/login"
-            state={{ loggedState: isLogged }}
-          >
-            Login
-          </Link>
-        </li>
-      );
-    }
-  } else {
-    menu = (
-      <li className="nav-item">
-        <Link
-          className="nav-link"
-          to="/login"
-          state={{ loggedState: isLogged }}
-        >
-          Login
-        </Link>
-      </li>
-    );
-  }
+  // if (isLogged === true) {
+  //   if (parsing.level === "user") {
+  //     menu = (
+  //       <li className="nav-item">
+  //         <a className="nav-link" to="/login">
+  //           User
+  //         </a>
+  //       </li>
+  //     );
+  //   } else if (parsing.level === "admin") {
+  //     menu = (
+  //       <li className="nav-item">
+  //         <a className="nav-link" to="/login">
+  //           Admin
+  //         </a>
+  //       </li>
+  //     );
+  //   } else {
+  //     menu = (
+  //       <li className="nav-item">
+  //         <Link
+  //           className="nav-link"
+  //           to="/login"
+  //           state={{ loggedState: isLogged }}
+  //         >
+  //           Login
+  //         </Link>
+  //       </li>
+  //     );
+  //   }
+  // } else {
+  //   menu = (
+  //     <li className="nav-item">
+  //       <Link
+  //         className="nav-link"
+  //         to="/login"
+  //         state={{ loggedState: isLogged }}
+  //       >
+  //         Login
+  //       </Link>
+  //     </li>
+  //   );
+  // }
 
   //get Category
 
@@ -115,12 +116,12 @@ const Navbar = (props) => {
 
               {/* end category drop down*/}
 
-              {menu}
-              {/* <li className="nav-item">
+              {/* {menu} */}
+              <li className="nav-item">
                 <Link className="nav-link" to="/login">
                   Login
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
         </div>
