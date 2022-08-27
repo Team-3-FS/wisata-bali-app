@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
-import { getUserWisataId } from "../../axios/user/userAxios";
+import { getUserWisataId, editKomenRating } from "../../axios/user/userAxios";
 
 const UserWisataId = () => {
   const [getResKomentar, setgetResKomentar] = useState([]);
@@ -33,7 +33,22 @@ const UserWisataId = () => {
     );
   }, [params.id]);
 
-  console.log(getKomenId);
+  const navigate = useNavigate();
+  const idUser = getKomenId.userId;
+
+  // console.log(idUser);
+
+  const [formAdd, setFormAdd] = useState({
+    userId: 0,
+    rating: "",
+    kometar: "",
+  });
+
+  // console.log(formAdd);
+  const submitAdd = () => {
+    editKomenRating(params.id, formAdd);
+    navigate(`/user/wisata/${params.id}`);
+  };
 
   return (
     <div>
@@ -110,9 +125,99 @@ const UserWisataId = () => {
                       />
                     </div>
                     <p>{getKomenId.kometar}</p>
-                    <Link className="btn btn-outline-dark mt-auto" to={"/"}>
+
+                    <a
+                      className="btn btn-sm btn-dark"
+                      data-bs-toggle="modal"
+                      data-bs-target="#add"
+                      onClick={() => {
+                        setFormAdd({
+                          ...formAdd,
+                          userId: idUser,
+                        });
+                      }}
+                    >
                       + Ulasan
-                    </Link>
+                    </a>
+
+                    {/* +++ */}
+                    <div
+                      className="modal fade"
+                      id="add"
+                      tabIndex={-1}
+                      aria-labelledby="addLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                          <div className="modal-header text-center">
+                            <h5 className="modal-title w-100" id="addLabel">
+                              Ulasan Mu
+                            </h5>
+                          </div>
+                          <div className="modal-body px-3 py-4">
+                            <form>
+                              {/* input ulasan */}
+                              <div className="mb-3">
+                                <label htmlFor="name" className="form-label">
+                                  Ulasan
+                                </label>
+                                <input
+                                  type="text"
+                                  value={formAdd.kometar}
+                                  onChange={(e) =>
+                                    setFormAdd({
+                                      ...formAdd,
+                                      kometar: e.target.value,
+                                    })
+                                  }
+                                  required
+                                  className="form-control"
+                                  id="name"
+                                  placeholder={getKomenId.kometar}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label htmlFor="rating" className="form-label">
+                                  Rating (0-5)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={formAdd.rating}
+                                  onChange={(e) =>
+                                    setFormAdd({
+                                      ...formAdd,
+                                      rating: e.target.value,
+                                    })
+                                  }
+                                  required
+                                  className="form-control"
+                                  id="rating"
+                                  placeholder={getKomenId.rating}
+                                />
+                              </div>
+
+                              <div className="mb-3 py-2">
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-dark mx-1"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="submit"
+                                  onClick={() => submitAdd()}
+                                  className="btn btn-sm btn-dark"
+                                >
+                                  Submit
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

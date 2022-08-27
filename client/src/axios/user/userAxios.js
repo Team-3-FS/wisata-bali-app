@@ -42,4 +42,17 @@ const getUserWisataId = async (wisataId, cb) => {
   }
 };
 
-export { getWisataUser, getUserWisataId };
+const editKomenRating = async (id, form) => {
+  try {
+    let result = await axios({
+      method: "PUT",
+      url: URL + "/wisata/" + id,
+      data: form,
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getWisataUser, getUserWisataId, editKomenRating };
