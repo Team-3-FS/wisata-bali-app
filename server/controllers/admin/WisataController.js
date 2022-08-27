@@ -1,5 +1,4 @@
 const { wisata, category, image } = require("../../models");
-const Op = require("sequelize").Op;
 class WisataController {
   static async getWisata(req, res) {
     try {
@@ -13,8 +12,15 @@ class WisataController {
     try {
       const { id } = req.params;
       const resWisata = await wisata.findOne({ include: [category], where: { id } });
-      const resImage = await image.findAll({ where: { wisataId: resWisata.id } });
-      resWisata ? res.status(200).json({ resWisata, resImage }) : res.status(404).json(`Not found!`);
+      let resImage = await image.findAll({ where: { wisataId: id } });
+      let tempImg = [];
+      resImage.forEach((img) => {
+        const { id, wistataId, image } = img;
+        if (image !== "assets/default.jpeg") {
+          return tempImg.push(img);
+        }
+      });
+      resWisata ? res.status(200).json({ resWisata, tempImg }) : res.status(404).json(`Not found!`);
     } catch (err) {
       res.status(500).json(err);
     }
