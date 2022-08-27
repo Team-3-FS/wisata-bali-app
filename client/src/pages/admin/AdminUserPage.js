@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getUsers, getUserById, addUser, delUser, updUser } from "../../axios/admin/adminUserAxios";
+import { useNavigate } from "react-router-dom";
 
 const AdminUserPage = () => {
+  const navigate = useNavigate();
+  // tampilkan user
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    getUsers((res) => setUsers(res));
+  }, []);
+
+  //tambah user
+  const [formAdd, setFormAdd] = useState({
+    nama: "",
+    email: "",
+    pass: "",
+  });
+
+  const submitAdd = () => {
+    addUser(formAdd);
+    navigate("/admin");
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -13,26 +33,31 @@ const AdminUserPage = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama</th>
                   <th scope="col">Email</th>
                   <th scope="col">Level</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>
-                    <a className="btn btn-sm btn-dark mx-1 " data-bs-toggle="modal" data-bs-target="#edit">
-                      Edit
-                    </a>
-                    <a className="btn btn-sm btn-dark">Delete</a>
-                  </td>
-                </tr>
+                {users.map((user, index) => {
+                  const { id, nama, email, level } = user;
+                  return (
+                    <tr key={id}>
+                      <td>{index + 1}</td>
+                      <td>{nama}</td>
+                      <td>{email}</td>
+                      <td>{level}</td>
+                      <td>
+                        <a className="btn btn-sm btn-dark mx-1 " data-bs-toggle="modal" data-bs-target="#edit">
+                          Edit
+                        </a>
+                        <a className="btn btn-sm btn-dark">Delete</a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -53,25 +78,46 @@ const AdminUserPage = () => {
                   <label htmlFor="name" className="form-label">
                     Nama
                   </label>
-                  <input type="text" required className="form-control" id="name" placeholder="Masukkan nama..." />
+                  <input
+                    type="text"
+                    onChange={(e) => setFormAdd({ ...formAdd, nama: e.target.value })}
+                    required
+                    className="form-control"
+                    id="name"
+                    placeholder="Masukkan nama..."
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
-                  <input type="text" required className="form-control" id="name" placeholder="name@example.com" />
+                  <input
+                    type="text"
+                    onChange={(e) => setFormAdd({ ...formAdd, email: e.target.value })}
+                    required
+                    className="form-control"
+                    id="email"
+                    placeholder="name@example.com"
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="pass" className="form-label">
                     Kata Sandi
                   </label>
-                  <input type="password" required className="form-control" id="pass" placeholder="Masukkan kata sandi" />
+                  <input
+                    type="password"
+                    onChange={(e) => setFormAdd({ ...formAdd, pass: e.target.value })}
+                    required
+                    className="form-control"
+                    id="pass"
+                    placeholder="Masukkan kata sandi"
+                  />
                 </div>
                 <div className="mb-3 py-2">
                   <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
                     Close
                   </button>
-                  <button type="submit" className="btn btn-sm btn-dark">
+                  <button type="submit" onClick={() => submitAdd()} className="btn btn-sm btn-dark">
                     Tambah
                   </button>
                 </div>
@@ -92,23 +138,23 @@ const AdminUserPage = () => {
             <div className="modal-body px-3 py-4">
               <form>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
+                  <label htmlFor="ename" className="form-label">
                     Nama
                   </label>
-                  <input type="text" required className="form-control" id="name" placeholder="Masukkan nama..." />
+                  <input type="text" required className="form-control" id="ename" placeholder="Masukkan nama..." />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
+                  <label htmlFor="eemail" className="form-label">
                     Email
                   </label>
-                  <input type="text" required className="form-control" id="name" placeholder="name@example.com" />
+                  <input type="text" required className="form-control" id="eemail" placeholder="name@example.com" />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="pass" className="form-label">
                     Level
                   </label>
                   <select className="form-select" required aria-label="Default select example">
-                    <option selected>Pilih level...</option>
+                    <option defaultValue={""}>Pilih level...</option>
                     <option value="admin">Admin</option>
                     <option value="user">User</option>
                   </select>
