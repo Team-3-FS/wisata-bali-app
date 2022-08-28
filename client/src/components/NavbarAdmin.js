@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getCategory } from "../axios/navbarAxios";
-import Cookies from "js-cookie";
 import { logoutUser } from "../axios/homeAxios";
 
 const NavbarAdmin = () => {
   //get Category
-  const [getAllCategory, setGetAllCategory] = useState([]);
-  // console.log(getAllCategory);
-
   let navigate = useNavigate();
-  useEffect(() => {
-    getCategory((result) => setGetAllCategory(result.data));
-  }, []);
 
   const logoutHandler = async () => {
     logoutUser();
-    navigate('/')
   };
 
   return (
@@ -38,34 +29,30 @@ const NavbarAdmin = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ms-auto">
           {/* category dropdown */}
-
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Category
-            </a>
-            <ul className="dropdown-menu">
-              {getAllCategory.map((result) => {
-                const { id, nama } = result;
-                return (
-                  <li key={id}>
-                    <Link className="dropdown-item" to={`category/${id}`}>
-                      {nama}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+          <li className="nav-item">
+            <Link to="/admin/wisata" className="nav-link">
+              Wisata
+            </Link>
           </li>
           <li className="nav-item">
-            <a onClick={() => logoutHandler()} className="nav-link">
+            <Link to="/admin/pengguna" className="nav-link">
+              Pengguna
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/admin/kategori" className="nav-link">
+              Kategori
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/admin/komentar" className="nav-link">
+              Komentar
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/" onClick={() => logoutHandler()} className="nav-link">
               Logout
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

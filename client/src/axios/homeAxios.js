@@ -101,11 +101,7 @@ const logoutUser = async () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         Cookies.remove("user");
-        Swal.fire(
-          "Logout!",
-          "You Has Been Logout, Wait a Second We Move You to Home Page",
-          "success"
-        );
+        Swal.fire("Logout!", "You Has Been Logout, Wait a Second We Move You to Home Page", "success");
         window.location.reload(false);
       }
     });
@@ -119,11 +115,4 @@ const logoutUser = async () => {
   }
 };
 
-export {
-  getWisata,
-  getCategoryId,
-  getWisataId,
-  loginUser,
-  regisUser,
-  logoutUser,
-};
+export { getWisata, getCategoryId, getWisataId, loginUser, regisUser, logoutUser };

@@ -41,8 +41,8 @@ const AdminWisataPage = () => {
       };
       // addImage(form);
       console.log(form);
+      setSearch(!search);
     });
-    setSearch(!search);
   };
 
   const btnDetail = (id) => {
