@@ -8,7 +8,7 @@ const NavbarUser = () => {
   let cookies = Cookies.get("user");
   let parsing
   cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
-  let navigate = useNavigate();
+  console.log(parsing.id)
 
   const logoutHandler = async () => {
     logoutUser();
@@ -92,7 +92,7 @@ const NavbarUser = () => {
               className="dropdown-menu"
               aria-labelledby="navbarDropdownMenuLink"
             >
-              <Link className="dropdown-item" to="">
+              <Link className="dropdown-item" to={`/user/profile/${parsing.id}`}>
                 Profile
               </Link>
               <Link
