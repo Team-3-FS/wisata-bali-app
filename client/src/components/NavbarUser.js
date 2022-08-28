@@ -8,7 +8,7 @@ const NavbarUser = () => {
   let cookies = Cookies.get("user");
   let parsing
   cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
-  console.log(parsing.id)
+  // console.log(parsing.id)
 
   const logoutHandler = async () => {
     logoutUser();
@@ -24,7 +24,7 @@ const NavbarUser = () => {
   return (
     <>
       <Link className="navbar-brand" to="/">
-        Wisata Bali Apps For User
+        Wisata Bali Apps
       </Link>
       <button
         className="navbar-toggler"

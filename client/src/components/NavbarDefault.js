@@ -13,7 +13,7 @@ const NavbarDefault = () => {
   return (
     <>
       <Link className="navbar-brand" to="/">
-        Wisata Bali Apps For Default
+        Wisata Bali Apps
       </Link>
       <button
         className="navbar-toggler"

@@ -3,6 +3,16 @@ import React, { useState, useEffect } from "react";
 import { getProfileUser, editProfile } from "../../axios/user/userAxios";
 
 const EditUser = () => {
+
+  const [image, setImage] = useState("http://cdn.onlinewebfonts.com/svg/img_542942.png")
+  const [saveImage, setSaveImage] = useState(null)
+
+  const handleUploadChange = (e) =>{
+    let uploaded = e.target.files[0]
+    setImage(URL.createObjectURL(uploaded))
+    setSaveImage(uploaded)
+  }
+
   const [getProfile, setGetProfile] = useState([]);
   //   console.log(getProfile);
 
@@ -21,26 +31,37 @@ const EditUser = () => {
     pass: "",
     images: "",
   });
-
-  console.log(formAdd);
+  // console.log(getProfile)
+  // console.log(formAdd);
   const submitAdd = () => {
     editProfile(formAdd);
     // navigate(`/user/wisata/${params.id}`);
   };
   return (
-    <div>
-      <div className="col mb-5">
-        <div className="card h-100">
-          <img
-            className="card-img-top "
-            height="150"
-            src={"http://localhost:3000/" + getProfile.image}
-            alt="gambar"
-          />
-          <div className="card-body p-4">
-            <div className="text-center">
-              <h5 className="fw-bolder">Nama :{getProfile.nama}</h5>
-              <h5 className="fw-bolder">Email : {getProfile.email}</h5>
+    <div className="row">
+      <div className="col-md-6 mb-8 mx-auto">
+        <div className="d-flex flex-row border rounded">
+          <div className="p-0 w-25 rounded py-2 mx-2">
+            {getProfile.image === null ? (
+              <img
+                className="card-img-top "
+                height="150"
+                src={"http://cdn.onlinewebfonts.com/svg/img_542942.png"}
+                alt="gambar"
+              />
+            ) : (
+              <img
+                className="card-img-top "
+                height="150"
+                src={"http://localhost:3000/" + getProfile.image}
+                alt="gambar"
+              />
+            )}
+          </div>
+          <div className="pl-4 pt-2 pr-2 pb-3 w-75 border-left">
+            <h4 className="fw-bolder">{getProfile.nama}</h4>
+            <h5 className="fw">{getProfile.email}</h5>
+            <p className="text-right m-0">
               <a
                 className="btn btn-sm btn-dark"
                 data-bs-toggle="modal"
@@ -77,26 +98,32 @@ const EditUser = () => {
                         <div className="mb-3">
                           <label htmlFor="name" className="form-label">
                             Foto Profile
-                            <img
-                              className="card-img-top "
-                              height="150"
-                              src={"http://localhost:3000/" + getProfile.image}
-                              alt="gambar"
-                            />
+                            {getProfile.image === null ? (
+                              <img
+                                className="card-img-top "
+                                height="150"
+                                src={image}
+                                alt="gambar"
+                              />
+                            ) : (
+                              <img
+                                className="card-img-top "
+                                height="150"
+                                src={
+                                  "http://localhost:3000/" + getProfile.image
+                                }
+                                alt="gambar"
+                              />
+                            )}
                           </label>
                           <div className="form-group">
-                            <label for="exampleFormControlFile1"></label>
+                            <label htmlFor="exampleFormControlFile1"></label>
                             <input
                               type="file"
-                              className="form-control-file"
-                              id="exampleFormControlFile1"
-                              value={formAdd.images}
-                              onChange={(e) =>
-                                setFormAdd({
-                                  ...formAdd,
-                                  images: e.target.value,
-                                })
-                              }
+                              className="form-control"
+                              id="formFile"
+                              accept="image/*"
+                              onChange={handleUploadChange}
                             />
                           </div>
                         </div>
@@ -160,7 +187,7 @@ const EditUser = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </p>
           </div>
         </div>
       </div>
