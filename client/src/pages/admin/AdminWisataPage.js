@@ -1,6 +1,6 @@
 import { getWisatas, getWisataById, addWisata, delWisata, updWisata } from "../../axios/admin/adminWisataAxios";
 import { getCategories, getCategoryById } from "../../axios/admin/adminCategoryAxios";
-import { getImages, getImageById, addImage, delImage } from "../../axios/admin/adminImageAxios";
+import { getImages, addImage, delImage } from "../../axios/admin/adminImageAxios";
 import React, { useState, useEffect } from "react";
 import { Rating } from "react-simple-star-rating";
 
@@ -23,29 +23,29 @@ const AdminWisataPage = () => {
     categoryId: "",
   });
 
-  const [file, setFile] = useState("");
+  let tempImgEdit = [];
+  const [img, setImg] = useState();
   const [preview, setPreview] = useState("");
 
   const loadImage = (e) => {
-    const image = e.target.files[0];
-    setFile(image);
-    setPreview(URL.createObjectURL(image));
+    setImg(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
   const submitAdd = () => {
     addWisata(formAdd, (dataAdd) => {
       const { id } = dataAdd;
-      let form = {
-        wisataId: id,
-        images: file,
-      };
-      // addImage(form);
-      console.log(form);
+      const formData = new FormData();
+      formData.append("images", img);
+      formData.append("wisataId", id);
+      addImage(formData);
       setSearch(!search);
     });
   };
 
   const btnDetail = (id) => {
+    setImg("");
+    setPreview("");
     getWisataById(id, (res) => {
       setDataOneWisata(res.resWisata);
       setImages(res.tempImg);
@@ -53,6 +53,8 @@ const AdminWisataPage = () => {
   };
 
   const btnDelete = (id) => {
+    setImg("");
+    setPreview("");
     delWisata(id);
     setSearch(!search);
   };
@@ -61,7 +63,22 @@ const AdminWisataPage = () => {
   const [wisataId, setWisataId] = useState();
   const [namaCat, setNamaCat] = useState({});
 
+  const btnAdd = () => {
+    setImg("");
+    setPreview("");
+  };
+
+  const btnSimpanFOto = () => {
+    tempImgEdit.push(preview);
+    const formData = new FormData();
+    formData.append("images", img);
+    formData.append("wisataId", wisataId);
+    addImage(formData);
+  };
+
   const btnEdit = (id) => {
+    setImg("");
+    setPreview("");
     getWisataById(id, (res) => {
       setImages(res.tempImg);
       setNamaCat({
@@ -87,7 +104,7 @@ const AdminWisataPage = () => {
       <div className="row">
         <div className="col-12 mx-auto border my-1 py-3 rounded">
           <h4 className="text-center">Data Wisata</h4>
-          <a className="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#add">
+          <a className="btn btn-sm btn-dark" onClick={() => btnAdd()} data-bs-toggle="modal" data-bs-target="#add">
             Tambah Wisata
           </a>
           <div className="table-responsive text-center">
@@ -218,7 +235,7 @@ const AdminWisataPage = () => {
                   <label htmlFor="formFile" className="form-label">
                     Foto
                   </label>
-                  <input className="form-control" onChange={loadImage} type="file" id="formFile" />
+                  <input className="form-control" onChange={(e) => loadImage(e)} type="file" id="formFile" />
                 </div>
                 {preview ? (
                   <div className="col-auto">
@@ -321,12 +338,18 @@ const AdminWisataPage = () => {
                   <div className="input-group">
                     <input
                       type="file"
+                      onChange={(e) => loadImage(e)}
                       className="form-control"
                       id="inputGroupFile04"
                       aria-describedby="inputGroupFileAddon04"
                       aria-label="Upload"
                     />
-                    <button className="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
+                    <button
+                      onClick={() => btnSimpanFOto()}
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      id="inputGroupFileAddon04"
+                    >
                       Simpan
                     </button>
                   </div>
@@ -347,6 +370,15 @@ const AdminWisataPage = () => {
                                 className="rounded center-cropped"
                                 alt="..."
                               />
+                            </div>
+                          );
+                        })
+                      : ""}
+                    {tempImgEdit.length > 0
+                      ? tempImgEdit.map((img, index) => {
+                          return (
+                            <div className="col-auto" key={index}>
+                              <img src={`${tempImgEdit[img]}`} className="rounded center-cropped" alt="..." />
                             </div>
                           );
                         })

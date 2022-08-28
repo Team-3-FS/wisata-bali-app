@@ -36,6 +36,7 @@ const addUser = async (form) => {
       data: form,
     });
     Swal.fire("Create", "Create Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }

@@ -37,6 +37,7 @@ const addWisata = async (form, dataAdd) => {
     });
     dataAdd(addWisata.data);
     Swal.fire("Create", "Create Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }
@@ -49,6 +50,7 @@ const delWisata = async (id) => {
       url: `${URL}/${id}`,
     });
     Swal.fire("Delete", "Delete Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }
@@ -62,6 +64,7 @@ const updWisata = async (id, form) => {
       data: form,
     });
     Swal.fire("Update", "Update Success", "success");
+    window.location.reload(true);
   } catch (err) {
     console.log(err.response.data);
   }
