@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const AdminKomenPage = () => {
+  let cookies = Cookies.get("user");
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (cookies !== undefined) {
+      let parsing = JSON.parse(cookies);
+      if (parsing.level === "user") {
+        navigate("/user");
+      } else if (parsing.level === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [cookies]);
+
   return (
     <div className="container-fluid">
       <div className="row text-center">

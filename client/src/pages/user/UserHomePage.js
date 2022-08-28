@@ -1,9 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import { getWisataUser } from "../../axios/user/userAxios";
+import Cookies from "js-cookie";
 
 const HomePage = () => {
+  let cookies = Cookies.get("user");
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (cookies !== undefined) {
+      let parsing = JSON.parse(cookies);
+      if (parsing.level === "user") {
+        navigate("/user");
+      } else if (parsing.level === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [cookies]);
+
   const [getAllWisata, setGetAllWisata] = useState([]);
   // console.log(getWisataUser);
 

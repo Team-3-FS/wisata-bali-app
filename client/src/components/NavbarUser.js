@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCategory } from "../axios/navbarAxios";
+import { logoutUser } from "../axios/homeAxios";
+import Cookies from "js-cookie";
 
 const NavbarUser = () => {
+  let cookies = Cookies.get("user");
+  let parsing
+  cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
+  let navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    logoutUser();
+  };
+
   //get Category
   const [getAllCategory, setGetAllCategory] = useState([]);
   // console.log(getAllCategory);
@@ -53,10 +64,45 @@ const NavbarUser = () => {
               })}
             </ul>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              {parsing.image === null ? (
+                <img
+                  src={"https://cdn-icons-png.flaticon.com/512/1596/1596810.png"}
+                  width="25"
+                  height="25"
+                  className="rounded-circle"
+                />
+              ) : (
+                <img
+                  src={"http://localhost:3000/" + parsing.image}
+                  width="25"
+                  height="25"
+                  className="rounded-circle"
+                />
+              )}
+            </a>
+            <ul
+              className="dropdown-menu"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <Link className="dropdown-item" to="">
+                Profile
+              </Link>
+              <Link
+                to="/"
+                onClick={() => logoutHandler()}
+                className="dropdown-item"
+              >
+                Logout
+              </Link>
+            </ul>
           </li>
         </ul>
       </div>
