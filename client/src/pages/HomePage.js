@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import { getWisata } from "../axios/homeAxios";
 
 const HomePage = () => {
   let cookies = Cookies.get("user");
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const [getAllWisata, setGetAllWisata] = useState([]);
 
   useEffect(() => {
@@ -37,12 +37,7 @@ const HomePage = () => {
               <div className="col mb-5" key={id}>
                 <div className="card h-100">
                   {/* <!-- Product image--> */}
-                  <img
-                    className="card-img-top"
-                    height="150"
-                    src={"http://localhost:3000/" + images[0].image}
-                    alt="gambar"
-                  />
+                  <img className="card-img-top" height="150" src={"http://localhost:3000/" + images[0].image} alt="gambar" />
                   {/* {console.log(images)} */}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
@@ -60,10 +55,7 @@ const HomePage = () => {
                   {/* <!-- Product actions--> */}
                   <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div className="text-center">
-                      <Link
-                        className="btn btn-outline-dark mt-auto"
-                        to={`wisata/${id}`}
-                      >
+                      <Link className="btn btn-outline-dark mt-auto" to={`wisata/${id}`}>
                         See Detail
                       </Link>
                     </div>
