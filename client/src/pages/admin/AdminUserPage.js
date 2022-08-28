@@ -38,7 +38,7 @@ const AdminUserPage = () => {
 
   const submitEdit = () => {
     updUser(userId, formEdit);
-    navigate("/admin");
+    navigate("/admin/pengguna");
   };
 
   // TODO bagian hapus user belum otomatis reload ulang pagenya

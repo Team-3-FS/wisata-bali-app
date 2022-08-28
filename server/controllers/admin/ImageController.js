@@ -22,7 +22,6 @@ class ImageController {
     try {
       const { wisataId } = req.body;
       const images = req.file.path;
-      // console.log(images);
       await image.destroy({ where: { wisataId, image: "assets/default.jpeg" } });
       let addImage = await image.create({ wisataId, image: images });
       res.status(201).json(addImage);

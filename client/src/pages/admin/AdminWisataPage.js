@@ -1,18 +1,20 @@
 import { getWisatas, getWisataById, addWisata, delWisata, updWisata } from "../../axios/admin/adminWisataAxios";
 import { getCategories, getCategoryById } from "../../axios/admin/adminCategoryAxios";
+import { getImages, getImageById, addImage, delImage } from "../../axios/admin/adminImageAxios";
 import React, { useState, useEffect } from "react";
 import { Rating } from "react-simple-star-rating";
 
 const AdminWisataPage = () => {
   const [dataWisata, setDataWisata] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [dataOneWisata, setDataOneWisata] = useState({});
   const [images, setImages] = useState([]);
+  const [dataOneWisata, setDataOneWisata] = useState({});
+  let [search, setSearch] = useState(false);
 
   useEffect(() => {
     getWisatas((res) => setDataWisata(res));
     getCategories((res) => setCategories(res));
-  }, []);
+  }, [search]);
 
   const [formAdd, setFormAdd] = useState({
     nama: "",
@@ -21,8 +23,26 @@ const AdminWisataPage = () => {
     categoryId: "",
   });
 
+  const [file, setFile] = useState("");
+  const [preview, setPreview] = useState("");
+
+  const loadImage = (e) => {
+    const image = e.target.files[0];
+    setFile(image);
+    setPreview(URL.createObjectURL(image));
+  };
+
   const submitAdd = () => {
-    addWisata(formAdd);
+    addWisata(formAdd, (dataAdd) => {
+      const { id } = dataAdd;
+      let form = {
+        wisataId: id,
+        images: file,
+      };
+      // addImage(form);
+      console.log(form);
+    });
+    setSearch(!search);
   };
 
   const btnDetail = (id) => {
@@ -32,12 +52,36 @@ const AdminWisataPage = () => {
     });
   };
 
+  const btnDelete = (id) => {
+    delWisata(id);
+    setSearch(!search);
+  };
+
+  const [formEdit, setFormEdit] = useState({});
+  const [wisataId, setWisataId] = useState();
+  const [namaCat, setNamaCat] = useState({});
+
   const btnEdit = (id) => {
     getWisataById(id, (res) => {
-      // setDataOneWisata(res.resWisata);
-      // setImages(res.tempImg);
+      setImages(res.tempImg);
+      setNamaCat({
+        nama: res.resWisata.category.nama,
+      });
+      setWisataId(res.resWisata.id);
+      setFormEdit({
+        nama: res.resWisata.nama,
+        alamat: res.resWisata.alamat,
+        deskripsi: res.resWisata.deskripsi,
+        categoryId: res.resWisata.categoryId,
+      });
     });
   };
+
+  const submitEdit = () => {
+    updWisata(wisataId, formEdit);
+    setSearch(!search);
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -81,7 +125,7 @@ const AdminWisataPage = () => {
                         >
                           Edit
                         </a>
-                        <a className="btn btn-sm btn-dark" onClick={() => delWisata(id)}>
+                        <a className="btn btn-sm btn-dark" onClick={() => btnDelete(id)}>
                           Delete
                         </a>
                       </td>
@@ -103,89 +147,97 @@ const AdminWisataPage = () => {
               </h5>
             </div>
             <div className="modal-body px-3 py-4">
-              <form>
-                <div className="row">
-                  {/* batas isi */}
-                  <div className="col-12 mb-3">
-                    <label htmlFor="nama" className="form-label">
-                      Nama Wisata
-                    </label>
-                    <input
-                      type="text"
-                      onChange={(e) => setFormAdd({ ...formAdd, nama: e.target.value })}
-                      required
-                      className="form-control"
-                      id="nama"
-                      placeholder="Masukkan nama wisata..."
-                    />
-                  </div>
+              {/* <form> */}
+              <div className="row">
+                {/* batas isi */}
+                <div className="col-12 mb-3">
+                  <label htmlFor="nama" className="form-label">
+                    Nama Wisata
+                  </label>
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    onChange={(e) => setFormAdd({ ...formAdd, nama: e.target.value })}
+                    required
+                    className="form-control"
+                    id="nama"
+                    placeholder="Masukkan nama wisata..."
+                  />
+                </div>
 
-                  <div className="col-12 mb-3">
-                    <label htmlFor="alamat" className="form-label">
-                      Alamat
-                    </label>
-                    <textarea
-                      placeholder="Masukkan alamat..."
-                      className="form-control"
-                      required
-                      onChange={(e) => setFormAdd({ ...formAdd, alamat: e.target.value })}
-                      id="alamat"
-                      rows={2}
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label htmlFor="des" className="form-label">
-                      Deskripsi
-                    </label>
-                    <textarea
-                      placeholder="Masukkan deskripsi..."
-                      className="form-control"
-                      required
-                      onChange={(e) => setFormAdd({ ...formAdd, deskripsi: e.target.value })}
-                      id="des"
-                      rows={7}
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="col-4 mb-3">
-                    <label htmlFor="pass" className="form-label">
-                      Kategori
-                    </label>
-                    <select
-                      className="form-select"
-                      onChange={(e) => setFormAdd({ ...formAdd, categoryId: e.target.value })}
-                      required
-                      aria-label="Default select example"
-                    >
-                      <option value={""}>Pilih kategori...</option>
-                      {categories.map((cat) => {
-                        const { id, nama } = cat;
-                        return (
-                          <option key={+id} value={id}>
-                            {nama}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="col-8 mb-3">
-                    <label htmlFor="formFile" className="form-label">
-                      Foto
-                    </label>
-                    <input className="form-control" type="file" id="formFile" />
-                  </div>
-                  {/* batas isi */}
+                <div className="col-12 mb-3">
+                  <label htmlFor="alamat" className="form-label">
+                    Alamat
+                  </label>
+                  <textarea
+                    placeholder="Masukkan alamat..."
+                    className="form-control"
+                    required
+                    onChange={(e) => setFormAdd({ ...formAdd, alamat: e.target.value })}
+                    id="alamat"
+                    rows={2}
+                    defaultValue={""}
+                  />
                 </div>
-                <div className="mb-3 py-2">
-                  <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
-                    Close
-                  </button>
-                  <button onClick={() => submitAdd()} type="submit" className="btn btn-sm btn-dark">
-                    Tambah
-                  </button>
+                <div className="col-12 mb-3">
+                  <label htmlFor="des" className="form-label">
+                    Deskripsi
+                  </label>
+                  <textarea
+                    placeholder="Masukkan deskripsi..."
+                    className="form-control"
+                    required
+                    onChange={(e) => setFormAdd({ ...formAdd, deskripsi: e.target.value })}
+                    id="des"
+                    rows={7}
+                    defaultValue={""}
+                  />
                 </div>
-              </form>
+                <div className="col-4 mb-3">
+                  <label htmlFor="pass" className="form-label">
+                    Kategori
+                  </label>
+                  <select
+                    className="form-select"
+                    onChange={(e) => setFormAdd({ ...formAdd, categoryId: e.target.value })}
+                    required
+                    aria-label="Default select example"
+                  >
+                    <option value={""}>Pilih kategori...</option>
+                    {categories.map((cat) => {
+                      const { id, nama } = cat;
+                      return (
+                        <option key={+id} value={id}>
+                          {nama}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-8 mb-3">
+                  <label htmlFor="formFile" className="form-label">
+                    Foto
+                  </label>
+                  <input className="form-control" onChange={loadImage} type="file" id="formFile" />
+                </div>
+                {preview ? (
+                  <div className="col-auto">
+                    <img src={preview} alt="" className="preview-gambar" />
+                  </div>
+                ) : (
+                  ""
+                )}
+                {/* batas isi */}
+              </div>
+              <div className="mb-3 py-2">
+                <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
+                  Close
+                </button>
+                <button onClick={() => submitAdd()} type="submit" className="btn btn-sm btn-dark">
+                  Tambah
+                </button>
+              </div>
+              {/* </form> */}
             </div>
           </div>
         </div>
@@ -200,96 +252,118 @@ const AdminWisataPage = () => {
               </h5>
             </div>
             <div className="modal-body px-3 py-4">
-              <form>
-                <div className="row">
-                  {/* batas isi */}
-                  <div className="col-12 mb-3">
-                    <label htmlFor="nama" className="form-label">
-                      Nama Wisata
-                    </label>
-                    <input type="text" required className="form-control" id="nama" placeholder="Masukkan nama wisata..." />
-                  </div>
+              {/* <form> */}
+              <div className="row">
+                {/* batas isi */}
+                <div className="col-12 mb-3">
+                  <label htmlFor="nama" className="form-label">
+                    Nama Wisata
+                  </label>
+                  <input
+                    type="text"
+                    value={formEdit.nama}
+                    className="form-control"
+                    id="nama"
+                    onChange={(e) => setFormEdit({ ...formEdit, nama: e.target.value })}
+                  />
+                </div>
 
-                  <div className="col-12 mb-3">
-                    <label htmlFor="alamat" className="form-label">
-                      Alamat
-                    </label>
-                    <textarea
-                      placeholder="Masukkan alamat..."
-                      className="form-control"
-                      required
-                      id="alamat"
-                      rows={2}
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label htmlFor="des" className="form-label">
-                      Deskripsi
-                    </label>
-                    <textarea
-                      placeholder="Masukkan deskripsi..."
-                      className="form-control"
-                      required
-                      id="des"
-                      rows={7}
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="col-4 mb-3">
-                    <label htmlFor="pass" className="form-label">
-                      Kategori
-                    </label>
-                    <select className="form-select" required aria-label="Default select example">
-                      <option defaultValue={""}>Pilih kategori...</option>
-                      <option value="pantai">Pantai</option>
-                      <option value="danau">Danau</option>
-                      <option value="dll">dll</option>
-                    </select>
-                  </div>
-                  <div className="col-8 mb-3">
-                    <label htmlFor="formFile" className="form-label">
-                      Foto
-                    </label>
-                    <div className="input-group">
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="inputGroupFile04"
-                        aria-describedby="inputGroupFileAddon04"
-                        aria-label="Upload"
-                      />
-                      <button className="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-                        Simpan
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label htmlFor="formFile" className="form-label">
-                      Foto
-                    </label>
-                    <div className="row">
-                      <div className="col-auto">
-                        <img
-                          onDoubleClick={() => alert("delete image!")}
-                          src="http://localhost:3000/assets/default.jpeg"
-                          className="rounded center-cropped"
-                          alt="..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  {/* batas isi */}
+                <div className="col-12 mb-3">
+                  <label htmlFor="alamat" className="form-label">
+                    Alamat
+                  </label>
+                  <textarea
+                    value={formEdit.alamat}
+                    onChange={(e) => setFormEdit({ ...formEdit, alamat: e.target.value })}
+                    placeholder="Masukkan alamat..."
+                    className="form-control"
+                    required
+                    id="alamat"
+                    rows={2}
+                    defaultValue={""}
+                  />
                 </div>
-                <div className="mb-3 py-2">
-                  <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-sm btn-dark">
-                    Ubah
-                  </button>
+                <div className="col-12 mb-3">
+                  <label htmlFor="des" className="form-label">
+                    Deskripsi
+                  </label>
+                  <textarea
+                    placeholder="Masukkan deskripsi..."
+                    className="form-control"
+                    required
+                    id="des"
+                    rows={7}
+                    defaultValue={""}
+                    value={formEdit.deskripsi}
+                    onChange={(e) => setFormEdit({ ...formEdit, deskripsi: e.target.value })}
+                  />
                 </div>
-              </form>
+                <div className="col-4 mb-3">
+                  <label htmlFor="pass" className="form-label">
+                    Kategori
+                  </label>
+                  <select className="form-select" required aria-label="Default select example">
+                    <option defaultValue={formEdit.categoryId}>{namaCat.nama}</option>
+                    {categories.map((cat) => {
+                      const { id, nama } = cat;
+                      return (
+                        <option key={+id} value={id}>
+                          {nama}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-8 mb-3">
+                  <label htmlFor="formFile" className="form-label">
+                    Foto
+                  </label>
+                  <div className="input-group">
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="inputGroupFile04"
+                      aria-describedby="inputGroupFileAddon04"
+                      aria-label="Upload"
+                    />
+                    <button className="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
+                      Simpan
+                    </button>
+                  </div>
+                </div>
+                <div className="col-12 mb-3">
+                  <label htmlFor="formFile" className="form-label">
+                    Foto
+                  </label>
+                  <div className="row">
+                    {images.length > 0
+                      ? images.map((img) => {
+                          const { id, wisataId, image } = img;
+                          return (
+                            <div className="col-auto" key={id}>
+                              <img
+                                onDoubleClick={() => delImage(id)}
+                                src={`http://localhost:3000/${image}`}
+                                className="rounded center-cropped"
+                                alt="..."
+                              />
+                            </div>
+                          );
+                        })
+                      : ""}
+                  </div>
+                </div>
+                {/* batas isi */}
+              </div>
+              <div className="mb-3 py-2">
+                <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
+                  Close
+                </button>
+                <button onClick={() => submitEdit()} type="submit" className="btn btn-sm btn-dark">
+                  Ubah
+                </button>
+              </div>
+              {/* </form> */}
             </div>
           </div>
         </div>
@@ -310,7 +384,7 @@ const AdminWisataPage = () => {
                     {/* looping image */}
                     <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
                       <div className="carousel-inner">
-                        {images.length !== 0 ? (
+                        {images.length > 0 ? (
                           images.map((result) => {
                             const { id, image } = result;
                             return (

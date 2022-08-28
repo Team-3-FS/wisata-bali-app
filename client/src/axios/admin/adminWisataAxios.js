@@ -28,13 +28,14 @@ const getWisataById = async (id, cb) => {
   }
 };
 
-const addWisata = async (form) => {
+const addWisata = async (form, dataAdd) => {
   try {
-    await axios({
+    let addWisata = await axios({
       method: "POST",
       url: `${URL}`,
       data: form,
     });
+    dataAdd(addWisata.data);
     Swal.fire("Create", "Create Success", "success");
   } catch (err) {
     console.log(err.response.data);
