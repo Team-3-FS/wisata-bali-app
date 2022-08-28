@@ -12,6 +12,7 @@ import {
   AdminWisataPage,
   UserWisataId,
   AdminKomenPage,
+  EditUser,
 } from "../pages";
 
 const MainContent = () => {
@@ -35,14 +36,30 @@ const MainContent = () => {
 
         {/* USER PAGE */}
         <Route path="user" element={<UserHomePage></UserHomePage>}></Route>
-        <Route path="user/wisata/:id" element={<UserWisataId></UserWisataId>}></Route>
+        <Route
+          path="user/wisata/:id"
+          element={<UserWisataId></UserWisataId>}
+        ></Route>
+        <Route path="user/profile/:id" element={<EditUser></EditUser>}></Route>
 
         {/* ADMIN PAGE */}
         {/* <Route path="admin" element={<AdminWisataPage></AdminWisataPage>}></Route> */}
-        <Route path="admin/komentar" element={<AdminKomenPage></AdminKomenPage>}></Route>
-        <Route path="admin/pengguna" element={<AdminUserPage></AdminUserPage>}></Route>
-        <Route path="admin/kategori" element={<AdminCategoryPage></AdminCategoryPage>}></Route>
-        <Route path="admin/wisata" element={<AdminWisataPage></AdminWisataPage>}></Route>
+        <Route
+          path="admin/komentar"
+          element={<AdminKomenPage></AdminKomenPage>}
+        ></Route>
+        <Route
+          path="admin/pengguna"
+          element={<AdminUserPage></AdminUserPage>}
+        ></Route>
+        <Route
+          path="admin/kategori"
+          element={<AdminCategoryPage></AdminCategoryPage>}
+        ></Route>
+        <Route
+          path="admin/wisata"
+          element={<AdminWisataPage></AdminWisataPage>}
+        ></Route>
       </Routes>
     </div>
   );

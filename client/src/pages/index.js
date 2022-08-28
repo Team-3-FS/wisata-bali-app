@@ -9,6 +9,7 @@ import AdminUserPage from "./admin/AdminUserPage";
 import AdminCategoryPage from "./admin/AdminCategoryPage";
 import AdminWisataPage from "./admin/AdminWisataPage";
 import AdminKomenPage from "./admin/AdminKomenPage";
+import EditUser from "./user/EditUser";
 
 export {
   HomePage,
@@ -22,4 +23,5 @@ export {
   AdminWisataPage,
   AdminKomenPage,
   UserWisataId,
+  EditUser,
 };

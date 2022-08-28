@@ -55,4 +55,46 @@ const editKomenRating = async (id, form) => {
   }
 };
 
-export { getWisataUser, getUserWisataId, editKomenRating };
+const getProfileUser = async (cb) => {
+  // console.log(id);
+  let checkCookie = Cookies.get("user");
+  checkCookie = JSON.parse(checkCookie);
+  // console.log(checkCookie);
+  const { id } = checkCookie;
+  // console.log(id);
+
+  try {
+    // formId = { userId: 6 };
+    let result = await axios({
+      method: "POST",
+      url: URL + "/profile",
+      data: { id: id },
+    });
+
+    console.log(result.data);
+    cb(result.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const editProfile = async (form) => {
+  try {
+    let result = await axios({
+      method: "PUT",
+      url: URL + "/profile/",
+      data: form,
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  getWisataUser,
+  getUserWisataId,
+  editKomenRating,
+  getProfileUser,
+  editProfile,
+};
