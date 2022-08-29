@@ -71,7 +71,7 @@ const getProfileUser = async (cb) => {
       data: { id: id },
     });
 
-    console.log(result.data);
+    // console.log(result.data);
     cb(result.data);
   } catch (err) {
     console.log(err);

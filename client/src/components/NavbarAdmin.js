@@ -13,7 +13,7 @@ const NavbarAdmin = () => {
   return (
     <>
       <Link className="navbar-brand" to="/">
-        Wisata Bali Apps For Admin
+        Wisata Bali
       </Link>
       <button
         className="navbar-toggler"
