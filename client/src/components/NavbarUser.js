@@ -6,9 +6,9 @@ import Cookies from "js-cookie";
 
 const NavbarUser = () => {
   let cookies = Cookies.get("user");
-  let parsing
-  cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
-  console.log(parsing.id)
+  let parsing;
+  cookies !== undefined ? (parsing = JSON.parse(cookies)) : (parsing = "");
+  console.log(parsing.id);
 
   const logoutHandler = async () => {
     logoutUser();
@@ -42,13 +42,7 @@ const NavbarUser = () => {
           {/* category dropdown */}
 
           <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Category
             </a>
             <ul className="dropdown-menu">
@@ -56,7 +50,7 @@ const NavbarUser = () => {
                 const { id, nama } = result;
                 return (
                   <li key={id}>
-                    <Link className="dropdown-item" to={`category/${id}`}>
+                    <Link className="dropdown-item" to={`user/category/${id}`}>
                       {nama}
                     </Link>
                   </li>
@@ -80,26 +74,14 @@ const NavbarUser = () => {
                   className="rounded-circle"
                 />
               ) : (
-                <img
-                  src={"http://localhost:3000/" + parsing.image}
-                  width="25"
-                  height="25"
-                  className="rounded-circle"
-                />
+                <img src={"http://localhost:3000/" + parsing.image} width="25" height="25" className="rounded-circle" />
               )}
             </a>
-            <ul
-              className="dropdown-menu"
-              aria-labelledby="navbarDropdownMenuLink"
-            >
+            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <Link className="dropdown-item" to={`/user/profile/${parsing.id}`}>
                 Profile
               </Link>
-              <Link
-                to="/"
-                onClick={() => logoutHandler()}
-                className="dropdown-item"
-              >
+              <Link to="/" onClick={() => logoutHandler()} className="dropdown-item">
                 Logout
               </Link>
             </ul>

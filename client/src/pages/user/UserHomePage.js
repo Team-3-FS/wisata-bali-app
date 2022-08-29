@@ -32,7 +32,6 @@ const HomePage = () => {
 
   return (
     <div className="my-3">
-      <h1>User Page `hanya penanda saja nanti dihapus`</h1>
       <div className="container-fluid px-3 px-lg-5 mt-5">
         <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
           {getAllWisata.map((result) => {
@@ -42,12 +41,7 @@ const HomePage = () => {
               <div className="col mb-5" key={id}>
                 <div className="card h-100">
                   {/* <!-- Product image--> */}
-                  <img
-                    className="card-img-top"
-                    height="150"
-                    src={"http://localhost:3000/" + images[0].image}
-                    alt="gambar"
-                  />
+                  <img className="card-img-top" height="150" src={"http://localhost:3000/" + images[0].image} alt="gambar" />
                   {/* {console.log(images)} */}
                   {/* <!-- Product details--> */}
                   <div className="card-body p-4">
@@ -65,10 +59,7 @@ const HomePage = () => {
                   {/* <!-- Product actions--> */}
                   <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div className="text-center">
-                      <Link
-                        className="btn btn-outline-dark mt-auto"
-                        to={`wisata/${id}`}
-                      >
+                      <Link className="btn btn-outline-dark mt-auto" to={`wisata/${id}`}>
                         See Detail
                       </Link>
                     </div>
