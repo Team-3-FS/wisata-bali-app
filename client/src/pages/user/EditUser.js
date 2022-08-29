@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProfileUser, editProfile } from "../../axios/user/userAxios";
 
 const EditUser = () => {
-
-  const [image, setImage] = useState("http://cdn.onlinewebfonts.com/svg/img_542942.png")
-  const [saveImage, setSaveImage] = useState(null)
-
-  const handleUploadChange = (e) =>{
-    let uploaded = e.target.files[0]
-    setImage(URL.createObjectURL(uploaded))
-    setSaveImage(uploaded)
-  }
-
+  const param = useParams();
+  const { id } = param;
   const [getProfile, setGetProfile] = useState([]);
   //   console.log(getProfile);
 
@@ -24,24 +16,30 @@ const EditUser = () => {
   const emailCookieForm = getProfile.email;
   const passForm = getProfile.pass;
   const [formAdd, setFormAdd] = useState({
-    id: 0,
-    emailCookie: "",
     nama: "",
     email: "",
     pass: "",
     images: "",
   });
-  // console.log(getProfile)
-  // console.log(formAdd);
-  const submitAdd = () => {
-    editProfile(formAdd);
-    // navigate(`/user/wisata/${params.id}`);
+
+  const submitEdit = () => {
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("emailCookie", emailCookieForm);
+    formData.append("nama", formAdd.nama);
+    formData.append("email", formAdd.email);
+    formData.append("pass", formAdd.pass);
+    formData.append("images", formAdd.images);
+    editProfile(formData);
   };
+
+  console.log(formAdd);
+
   return (
-    <div className="row">
-      <div className="col-md-6 mb-8 mx-auto">
-        <div className="d-flex flex-row border rounded">
-          <div className="p-0 w-25 rounded py-2 mx-2">
+    <div className="container-fluid">
+      <div className="row">
+        {/* <div className="col-md-6 mx-auto">
+          <div className="d-flex flex-row border rounded">
             {getProfile.image === null ? (
               <img
                 className="card-img-top "
@@ -57,137 +55,194 @@ const EditUser = () => {
                 alt="gambar"
               />
             )}
+            <div className="card-body p-4">
+              <div className="pl-4 pt-2 pr-2 pb-3 w-75 border-left">
+                <h4 className="fw-bolder">Nama : {getProfile.nama}</h4>
+                <h5 className="fw">Email : {getProfile.email}</h5>
+                <a
+                  className="btn btn-sm btn-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target="#add"
+                  onClick={() => {
+                    setFormAdd({
+                      ...formAdd,
+                      id: idForm,
+                      emailCookie: emailCookieForm,
+                      pass: passForm,
+                      nama: getProfile.nama,
+                      email: getProfile.email,
+                    });
+                  }}
+                >
+                  Edit Profile
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="pl-4 pt-2 pr-2 pb-3 w-75 border-left">
-            <h4 className="fw-bolder">{getProfile.nama}</h4>
-            <h5 className="fw">{getProfile.email}</h5>
-            <p className="text-right m-0">
-              <a
-                className="btn btn-sm btn-dark"
-                data-bs-toggle="modal"
-                data-bs-target="#add"
-                onClick={() => {
-                  setFormAdd({
-                    ...formAdd,
-                    id: idForm,
-                    emailCookie: emailCookieForm,
-                    pass: passForm,
-                  });
-                }}
-              >
+        </div> */}
+        <div class="col-md-6 mb-8 mx-auto">
+          <div class="d-flex flex-row border rounded">
+            <div class="p-0 w-25 rounded py-2 mx-2">
+              {getProfile.image === null ? (
+                <img
+                  className="card-img-top"
+                  height="150"
+                  src={"http://cdn.onlinewebfonts.com/svg/img_542942.png"}
+                  alt="gambar"
+                />
+              ) : (
+                <img
+                  className="card-img-top "
+                  height="150"
+                  src={"http://localhost:3000/" + getProfile.image}
+                  alt="gambar"
+                />
+              )}
+            </div>
+            <div class="pl-4 pt-2 pr-2 pb-3 w-75 border-left">
+              <h4 class="fw-bolder">{getProfile.nama}</h4>
+              <h5 class="fw">{getProfile.email}</h5>
+              <p class="text-right">
+                <a
+                  className="btn btn-sm btn-dark mt-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#add"
+                  onClick={() => {
+                    setFormAdd({
+                      ...formAdd,
+                      id: idForm,
+                      emailCookie: emailCookieForm,
+                      pass: passForm,
+                      nama: getProfile.nama,
+                      email: getProfile.email,
+                    });
+                  }}
+                >
+                  Edit Profile
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* +++ */}
+      <div
+        className="modal fade"
+        id="add"
+        tabIndex={-1}
+        aria-labelledby="addLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title w-100" id="addLabel">
                 Edit Profile
-              </a>
-
-              {/* +++ */}
-              <div
-                className="modal fade"
-                id="add"
-                tabIndex={-1}
-                aria-labelledby="addLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    <div className="modal-header text-center">
-                      <h5 className="modal-title w-100" id="addLabel">
-                        Edit Profile
-                      </h5>
-                    </div>
-                    <div className="modal-body px-3 py-4">
-                      <form>
-                        <div className="mb-3">
-                          <label htmlFor="name" className="form-label">
-                            Foto Profile
-                            {getProfile.image === null ? (
-                              <img
-                                className="card-img-top "
-                                height="150"
-                                src={image}
-                                alt="gambar"
-                              />
-                            ) : (
-                              <img
-                                className="card-img-top "
-                                height="150"
-                                src={
-                                  "http://localhost:3000/" + getProfile.image
-                                }
-                                alt="gambar"
-                              />
-                            )}
-                          </label>
-                          <div className="form-group">
-                            <label htmlFor="exampleFormControlFile1"></label>
-                            <input
-                              type="file"
-                              className="form-control"
-                              id="formFile"
-                              accept="image/*"
-                              onChange={handleUploadChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="mb-3">
-                          <label htmlFor="name" className="form-label">
-                            Username
-                          </label>
-                          <input
-                            type="text"
-                            value={formAdd.nama}
-                            onChange={(e) =>
-                              setFormAdd({
-                                ...formAdd,
-                                nama: e.target.value,
-                              })
-                            }
-                            required
-                            className="form-control"
-                            id="name"
-                            placeholder={getProfile.nama}
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label htmlFor="rating" className="form-label">
-                            Email
-                          </label>
-                          <input
-                            type="text"
-                            value={formAdd.email}
-                            onChange={(e) =>
-                              setFormAdd({
-                                ...formAdd,
-                                email: e.target.value,
-                              })
-                            }
-                            required
-                            className="form-control"
-                            id="rating"
-                            placeholder={getProfile.email}
-                          />
-                        </div>
-
-                        <div className="mb-3 py-2">
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-dark mx-1"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="submit"
-                            onClick={() => submitAdd()}
-                            className="btn btn-sm btn-dark"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </form>
-                    </div>
+              </h5>
+            </div>
+            <div className="modal-body px-3 py-4">
+              <form>
+                <div className="row">
+                  <div className="col-6 mx-auto ">
+                    <img
+                      className="card-img-top rounded"
+                      height="200px"
+                      width="auto"
+                      src={"http://localhost:3000/" + getProfile.image}
+                      alt="gambar"
+                    />
                   </div>
                 </div>
-              </div>
-            </p>
+                <hr></hr>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    value={formAdd.nama}
+                    onChange={(e) =>
+                      setFormAdd({
+                        ...formAdd,
+                        nama: e.target.value,
+                      })
+                    }
+                    required
+                    className="form-control"
+                    id="name"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formAdd.email}
+                    onChange={(e) =>
+                      setFormAdd({
+                        ...formAdd,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                    className="form-control"
+                    id="email"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="pass" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    onChange={(e) =>
+                      setFormAdd({
+                        ...formAdd,
+                        pass: e.target.value,
+                      })
+                    }
+                    required
+                    className="form-control"
+                    id="pass"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label for="exampleFormControlFile1" className="form-label">
+                    Foto
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="exampleFormControlFile1"
+                    onChange={(e) =>
+                      setFormAdd({
+                        ...formAdd,
+                        images: e.target.files[0],
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-3 py-2">
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-dark mx-1"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={() => submitEdit()}
+                    className="btn btn-sm btn-dark"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

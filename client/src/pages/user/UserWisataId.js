@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import { getUserWisataId, editKomenRating } from "../../axios/user/userAxios";
+import { getProfileUser, editProfile } from "../../axios/user/userAxios";
 
 const UserWisataId = () => {
   const [getResKomentar, setgetResKomentar] = useState([]);
@@ -10,11 +11,15 @@ const UserWisataId = () => {
   const [getKomenId, setGetKomenId] = useState([]);
   const params = useParams();
   // console.log(getUserWisataId);
+  const [getProfile, setGetProfile] = useState([]);
+  //   console.log(getProfile);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) =>
-      setgetResKomentar(result.resAllKomentar)
-    );
+    getProfileUser((result) => setGetProfile(result));
+  }, []);
+
+  useEffect(() => {
+    getUserWisataId(params.id, (result) => setgetResKomentar(result.resAllKomentar));
   }, [params.id]);
 
   useEffect(() => {
@@ -22,15 +27,11 @@ const UserWisataId = () => {
   }, [params.id]);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) =>
-      setgetImage(result.resWisata.images)
-    );
+    getUserWisataId(params.id, (result) => setgetImage(result.resWisata.images));
   }, [params.id]);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) =>
-      setGetKomenId(result.resUserKomentar)
-    );
+    getUserWisataId(params.id, (result) => setGetKomenId(result.resUserKomentar));
   }, [params.id]);
 
   const navigate = useNavigate();
@@ -39,36 +40,31 @@ const UserWisataId = () => {
   // console.log(idUser);
 
   const [formAdd, setFormAdd] = useState({
-    userId: 0,
+    userId: "",
     rating: "",
     kometar: "",
   });
 
   // console.log(formAdd);
   const submitAdd = () => {
-    editKomenRating(params.id, formAdd);
-    navigate(`/user/wisata/${params.id}`);
+    console.log(getKomenId);
+    if (getKomenId.kometar === "Belum Ada Ulasan") {
+      editKomenRating(params.id, formAdd);
+      navigate(`/user/wisata/${params.id}`);
+    } else {
+    }
   };
 
   return (
     <div>
       <h1>USER WISATA ID</h1>
-      <div
-        id="carouselExampleControls"
-        className="carousel slide"
-        data-bs-ride="carousel"
-      >
+      <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-inner">
           {getImage.map((result) => {
             const { id, image } = result;
             return (
               <div className="carousel-item active" key={id}>
-                <img
-                  height="500"
-                  src={"http://localhost:3000/" + image}
-                  className="d-block w-100"
-                  alt="..."
-                />
+                <img height="500" src={"http://localhost:3000/" + image} className="d-block w-100" alt="..." />
               </div>
             );
           })}
@@ -79,10 +75,7 @@ const UserWisataId = () => {
           data-bs-target="#carouselExampleControls"
           data-bs-slide="prev"
         >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
+          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Previous</span>
         </button>
         <button
@@ -91,10 +84,7 @@ const UserWisataId = () => {
           data-bs-target="#carouselExampleControls"
           data-bs-slide="next"
         >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
+          <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>
@@ -118,11 +108,7 @@ const UserWisataId = () => {
                   <div className="text-center">
                     <h5 className="fw-bolder">Ulasan Mu</h5>
                     <div className="d-flex justify-content-center">
-                      <Rating
-                        initialValue={getKomenId.rating}
-                        readonly
-                        size="25px"
-                      />
+                      <Rating initialValue={getKomenId.rating} readonly size="25px" />
                     </div>
                     <p>{getKomenId.kometar}</p>
 
@@ -133,7 +119,7 @@ const UserWisataId = () => {
                       onClick={() => {
                         setFormAdd({
                           ...formAdd,
-                          userId: idUser,
+                          userId: getProfile.id,
                         });
                       }}
                     >
@@ -141,13 +127,7 @@ const UserWisataId = () => {
                     </a>
 
                     {/* +++ */}
-                    <div
-                      className="modal fade"
-                      id="add"
-                      tabIndex={-1}
-                      aria-labelledby="addLabel"
-                      aria-hidden="true"
-                    >
+                    <div className="modal fade" id="add" tabIndex={-1} aria-labelledby="addLabel" aria-hidden="true">
                       <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                           <div className="modal-header text-center">
@@ -156,64 +136,61 @@ const UserWisataId = () => {
                             </h5>
                           </div>
                           <div className="modal-body px-3 py-4">
-                            <form>
-                              {/* input ulasan */}
-                              <div className="mb-3">
-                                <label htmlFor="name" className="form-label">
-                                  Ulasan
-                                </label>
-                                <input
-                                  type="text"
-                                  value={formAdd.kometar}
-                                  onChange={(e) =>
-                                    setFormAdd({
-                                      ...formAdd,
-                                      kometar: e.target.value,
-                                    })
-                                  }
-                                  required
-                                  className="form-control"
-                                  id="name"
-                                  placeholder={getKomenId.kometar}
-                                />
-                              </div>
-                              <div className="mb-3">
-                                <label htmlFor="rating" className="form-label">
-                                  Rating (0-5)
-                                </label>
-                                <input
-                                  type="text"
-                                  value={formAdd.rating}
-                                  onChange={(e) =>
-                                    setFormAdd({
-                                      ...formAdd,
-                                      rating: e.target.value,
-                                    })
-                                  }
-                                  required
-                                  className="form-control"
-                                  id="rating"
-                                  placeholder={getKomenId.rating}
-                                />
-                              </div>
+                            {/* <form> */}
+                            {/* input ulasan */}
+                            <div className="mb-3">
+                              <label htmlFor="name" className="form-label">
+                                Ulasan
+                              </label>
+                              <input
+                                type="text"
+                                value={formAdd.kometar}
+                                onChange={(e) =>
+                                  setFormAdd({
+                                    ...formAdd,
+                                    kometar: e.target.value,
+                                  })
+                                }
+                                required
+                                className="form-control"
+                                id="name"
+                                placeholder={getKomenId.kometar}
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="rating" className="form-label">
+                                Rating (0-5)
+                              </label>
 
-                              <div className="mb-3 py-2">
-                                <button
-                                  type="button"
-                                  className="btn btn-sm btn-dark mx-1"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  type="submit"
-                                  onClick={() => submitAdd()}
-                                  className="btn btn-sm btn-dark"
-                                >
-                                  Submit
-                                </button>
-                              </div>
-                            </form>
+                              <select
+                                className="form-select"
+                                required
+                                aria-label="Default select example"
+                                onChange={(e) =>
+                                  setFormAdd({
+                                    ...formAdd,
+                                    rating: e.target.value,
+                                  })
+                                }
+                              >
+                                <option defaultValue="">Pilih rating...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                              </select>
+                            </div>
+
+                            <div className="mb-3 py-2">
+                              <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
+                                Close
+                              </button>
+                              <button type="submit" onClick={() => submitAdd()} className="btn btn-sm btn-dark">
+                                Submit
+                              </button>
+                            </div>
+                            {/* </form> */}
                           </div>
                         </div>
                       </div>
@@ -235,12 +212,7 @@ const UserWisataId = () => {
               return (
                 <div className="col mb-5" key={id}>
                   <div className="card h-100">
-                    <img
-                      className="card-img-top "
-                      height="150"
-                      src={"http://localhost:3000/" + user.image}
-                      alt="gambar"
-                    />
+                    <img className="card-img-top " height="150" src={"http://localhost:3000/" + user.image} alt="gambar" />
                     <div className="card-body p-4">
                       <div className="text-center">
                         <h5 className="fw-bolder">{user.nama}</h5>
@@ -257,24 +229,7 @@ const UserWisataId = () => {
             })
           ) : (
             <div className="col mb-5">
-              <div className="card h-100">
-                <img
-                  className="card-img-top "
-                  height="150"
-                  src="https://via.placeholder.com/150"
-                  alt="gambar"
-                />
-                <div className="card-body p-4">
-                  <div className="text-center">
-                    <h5 className="fw-bolder">Nama Wisata</h5>
-                    <div className="d-flex justify-content-center">
-                      <Rating initialValue={2} readonly size="25px" />
-                    </div>
-                    <p>Tanggal Created</p>
-                    Komentar
-                  </div>
-                </div>
-              </div>
+              <p>Belum ada ulasan...</p>
             </div>
           )}
         </div>
