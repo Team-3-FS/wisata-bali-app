@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         beforeCreate: (user, options) => {
           user.level = "user";
           user.pass = encryptPw(user.pass);
-          user.image = null;
+          user.image = "assets/gambar1.png";
         },
       },
       sequelize,

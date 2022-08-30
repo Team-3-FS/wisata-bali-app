@@ -278,7 +278,7 @@ const AdminWisataPage = () => {
                   </label>
                   <input
                     type="text"
-                    value={formEdit.nama}
+                    value={formEdit.nama ?? ""}
                     className="form-control"
                     id="nama"
                     onChange={(e) => setFormEdit({ ...formEdit, nama: e.target.value })}
@@ -290,14 +290,13 @@ const AdminWisataPage = () => {
                     Alamat
                   </label>
                   <textarea
-                    value={formEdit.alamat}
+                    value={formEdit.alamat ?? ""}
                     onChange={(e) => setFormEdit({ ...formEdit, alamat: e.target.value })}
                     placeholder="Masukkan alamat..."
                     className="form-control"
                     required
                     id="alamat"
                     rows={2}
-                    defaultValue={""}
                   />
                 </div>
                 <div className="col-12 mb-3">
