@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCategory } from "../axios/navbarAxios";
 import { logoutUser } from "../axios/homeAxios";
+import { getProfileUser } from "../axios/user/userAxios";
 import Cookies from "js-cookie";
 
 const NavbarUser = () => {
   let cookies = Cookies.get("user");
   let parsing
   cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
-  // console.log(parsing.id)
+  const [getProfile, setGetProfile] = useState([]);
+  
+  useEffect(() => {
+    getProfileUser((result) => setGetProfile(result));
+  }, []);
 
   const logoutHandler = async () => {
     logoutUser();
@@ -72,7 +77,7 @@ const NavbarUser = () => {
               role="button"
               data-bs-toggle="dropdown"
             >
-              {parsing.image === null ? (
+              {getProfile.image === null ? (
                 <img
                   src={"https://cdn-icons-png.flaticon.com/512/1596/1596810.png"}
                   width="25"
@@ -81,7 +86,7 @@ const NavbarUser = () => {
                 />
               ) : (
                 <img
-                  src={"http://localhost:3000/" + parsing.image}
+                  src={"http://localhost:3000/" + getProfile.image}
                   width="25"
                   height="25"
                   className="rounded-circle"
