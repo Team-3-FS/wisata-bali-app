@@ -91,4 +91,26 @@ const editProfile = async (form) => {
   }
 };
 
-export { getWisataUser, getUserWisataId, editKomenRating, getProfileUser, editProfile };
+const getCategoryId = async (id, cb) => {
+  // console.log(id);
+
+  try {
+    let result = await axios({
+      method: "GET",
+      url: URL + "/category/" + id,
+    });
+    console.log(result.data);
+    cb(result.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export {
+  getWisataUser,
+  getUserWisataId,
+  editKomenRating,
+  getProfileUser,
+  editProfile,
+  getCategoryId,
+};

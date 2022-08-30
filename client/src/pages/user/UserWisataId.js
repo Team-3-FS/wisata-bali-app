@@ -19,7 +19,9 @@ const UserWisataId = () => {
   }, []);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) => setgetResKomentar(result.resAllKomentar));
+    getUserWisataId(params.id, (result) =>
+      setgetResKomentar(result.resAllKomentar)
+    );
   }, [params.id]);
 
   useEffect(() => {
@@ -27,11 +29,15 @@ const UserWisataId = () => {
   }, [params.id]);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) => setgetImage(result.resWisata.images));
+    getUserWisataId(params.id, (result) =>
+      setgetImage(result.resWisata.images)
+    );
   }, [params.id]);
 
   useEffect(() => {
-    getUserWisataId(params.id, (result) => setGetKomenId(result.resUserKomentar));
+    getUserWisataId(params.id, (result) =>
+      setGetKomenId(result.resUserKomentar)
+    );
   }, [params.id]);
 
   const navigate = useNavigate();
@@ -58,13 +64,22 @@ const UserWisataId = () => {
   return (
     <div>
       <h1>USER WISATA ID</h1>
-      <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
+      <div
+        id="carouselExampleControls"
+        className="carousel slide"
+        data-bs-ride="carousel"
+      >
         <div className="carousel-inner">
           {getImage.map((result) => {
             const { id, image } = result;
             return (
               <div className="carousel-item active" key={id}>
-                <img height="500" src={"http://localhost:3000/" + image} className="d-block w-100" alt="..." />
+                <img
+                  height="500"
+                  src={"http://localhost:3000/" + image}
+                  className="d-block w-100"
+                  alt="..."
+                />
               </div>
             );
           })}
@@ -75,7 +90,10 @@ const UserWisataId = () => {
           data-bs-target="#carouselExampleControls"
           data-bs-slide="prev"
         >
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Previous</span>
         </button>
         <button
@@ -84,7 +102,10 @@ const UserWisataId = () => {
           data-bs-target="#carouselExampleControls"
           data-bs-slide="next"
         >
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>
@@ -108,7 +129,11 @@ const UserWisataId = () => {
                   <div className="text-center">
                     <h5 className="fw-bolder">Ulasan Mu</h5>
                     <div className="d-flex justify-content-center">
-                      <Rating initialValue={getKomenId.rating} readonly size="25px" />
+                      <Rating
+                        initialValue={getKomenId.rating}
+                        readonly
+                        size="25px"
+                      />
                     </div>
                     <p>{getKomenId.kometar}</p>
 
@@ -127,7 +152,13 @@ const UserWisataId = () => {
                     </a>
 
                     {/* +++ */}
-                    <div className="modal fade" id="add" tabIndex={-1} aria-labelledby="addLabel" aria-hidden="true">
+                    <div
+                      className="modal fade"
+                      id="add"
+                      tabIndex={-1}
+                      aria-labelledby="addLabel"
+                      aria-hidden="true"
+                    >
                       <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                           <div className="modal-header text-center">
@@ -183,10 +214,18 @@ const UserWisataId = () => {
                             </div>
 
                             <div className="mb-3 py-2">
-                              <button type="button" className="btn btn-sm btn-dark mx-1" data-bs-dismiss="modal">
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-dark mx-1"
+                                data-bs-dismiss="modal"
+                              >
                                 Close
                               </button>
-                              <button type="submit" onClick={() => submitAdd()} className="btn btn-sm btn-dark">
+                              <button
+                                type="submit"
+                                onClick={() => submitAdd()}
+                                className="btn btn-sm btn-dark"
+                              >
                                 Submit
                               </button>
                             </div>
@@ -212,7 +251,12 @@ const UserWisataId = () => {
               return (
                 <div className="col mb-5" key={id}>
                   <div className="card h-100">
-                    <img className="card-img-top " height="150" src={"http://localhost:3000/" + user.image} alt="gambar" />
+                    <img
+                      className="card-img-top "
+                      height="150"
+                      src={"http://localhost:3000/" + user.image}
+                      alt="gambar"
+                    />
                     <div className="card-body p-4">
                       <div className="text-center">
                         <h5 className="fw-bolder">{user.nama}</h5>

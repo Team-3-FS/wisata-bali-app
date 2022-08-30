@@ -7,10 +7,10 @@ import Cookies from "js-cookie";
 
 const NavbarUser = () => {
   let cookies = Cookies.get("user");
-  let parsing
-  cookies !== undefined ? parsing = JSON.parse(cookies) : parsing = ''
+  let parsing;
+  cookies !== undefined ? (parsing = JSON.parse(cookies)) : (parsing = "");
   const [getProfile, setGetProfile] = useState([]);
-  
+
   useEffect(() => {
     getProfileUser((result) => setGetProfile(result));
   }, []);
@@ -61,7 +61,7 @@ const NavbarUser = () => {
                 const { id, nama } = result;
                 return (
                   <li key={id}>
-                    <Link className="dropdown-item" to={`category/${id}`}>
+                    <Link className="dropdown-item" to={`user/category/${id}`}>
                       {nama}
                     </Link>
                   </li>
@@ -79,7 +79,9 @@ const NavbarUser = () => {
             >
               {getProfile.image === null ? (
                 <img
-                  src={"https://cdn-icons-png.flaticon.com/512/1596/1596810.png"}
+                  src={
+                    "https://cdn-icons-png.flaticon.com/512/1596/1596810.png"
+                  }
                   width="25"
                   height="25"
                   className="rounded-circle"
@@ -97,7 +99,10 @@ const NavbarUser = () => {
               className="dropdown-menu"
               aria-labelledby="navbarDropdownMenuLink"
             >
-              <Link className="dropdown-item" to={`/user/profile/${parsing.id}`}>
+              <Link
+                className="dropdown-item"
+                to={`/user/profile/${parsing.id}`}
+              >
                 Profile
               </Link>
               <Link
