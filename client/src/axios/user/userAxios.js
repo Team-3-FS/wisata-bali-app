@@ -49,6 +49,39 @@ const editKomenRating = async (id, form) => {
       url: URL + "/wisata/addKomentar/" + id,
       data: form,
     });
+    Swal.fire({
+      title: "Add Review",
+      text: "Add Review Success",
+      icon: "success",
+      confirmButtonText: "Oke",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload(true);
+      }
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const editing = async (id, form) => {
+  try {
+    let result = await axios({
+      method: "PUT",
+      url: URL + "/wisata/addKomentar/" + id,
+      data: form,
+    });
+    Swal.fire({
+      title: "Update Review",
+      text: "Update Review Success",
+      icon: "success",
+      confirmButtonText: "Oke",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload(true);
+      }
+    });
     console.log(result);
   } catch (error) {
     console.log(error);
@@ -113,4 +146,5 @@ export {
   getProfileUser,
   editProfile,
   getCategoryId,
+  editing
 };

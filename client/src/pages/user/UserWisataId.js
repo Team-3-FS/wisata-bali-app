@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
-import { getUserWisataId, editKomenRating } from "../../axios/user/userAxios";
+import {
+  getUserWisataId,
+  editKomenRating,
+  editing,
+} from "../../axios/user/userAxios";
 import { getProfileUser, editProfile } from "../../axios/user/userAxios";
 
 const UserWisataId = () => {
@@ -58,12 +62,12 @@ const UserWisataId = () => {
       editKomenRating(params.id, formAdd);
       navigate(`/user/wisata/${params.id}`);
     } else {
+      editing(params.id, formAdd);
     }
   };
 
   return (
     <div>
-      <h1>USER WISATA ID</h1>
       <div
         id="carouselExampleControls"
         className="carousel slide"
@@ -122,8 +126,8 @@ const UserWisataId = () => {
         <p>{getResWisata.deskripsi}</p>
 
         <div className="container-fluid px-3 px-lg-5 mt-5">
-          <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 row-center">
-            <div className="col mb-5">
+          <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+            <div className="col mb-5 mx-auto">
               <div className="card h-100">
                 <div className="card-body p-4">
                   <div className="text-center">
@@ -135,7 +139,7 @@ const UserWisataId = () => {
                         size="25px"
                       />
                     </div>
-                    <p>{getKomenId.kometar}</p>
+                    <p>" {getKomenId.kometar} "</p>
 
                     <a
                       className="btn btn-sm btn-dark"
@@ -244,27 +248,30 @@ const UserWisataId = () => {
 
       <div className="container-fluid px-3 px-lg-5 mt-5">
         <h3>Ringkasan Ulasan</h3>
-        <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+        <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3">
           {getResKomentar.length > 0 ? (
             getResKomentar.map((result) => {
               const { id, rating, kometar, createdAt, user } = result;
+              let tanggal = new Date(createdAt);
               return (
-                <div className="col mb-5" key={id}>
-                  <div className="card h-100">
-                    <img
-                      className="card-img-top "
-                      height="150"
-                      src={"http://localhost:3000/" + user.image}
-                      alt="gambar"
-                    />
-                    <div className="card-body p-4">
+                <div className="col-md-5 mb-2" key={id}>
+                  <div class="d-flex flex-row border rounded">
+                    <div class="p-0 w-25 rounded mx-4">
+                      <img
+                        className=" rounded-circle mx-auto my-2"
+                        height="150"
+                        src={"http://localhost:3000/" + user.image}
+                        alt="gambar"
+                      />
+                    </div>
+                    <div class="mx-5 w-75 border-left pt-4">
                       <div className="text-center">
                         <h5 className="fw-bolder">{user.nama}</h5>
                         <div className="d-flex justify-content-center">
                           <Rating initialValue={rating} readonly size="25px" />
                         </div>
-                        <p>{createdAt}</p>
-                        {kometar}
+                        <p>{tanggal.toDateString()}</p>
+                        " {kometar} "
                       </div>
                     </div>
                   </div>

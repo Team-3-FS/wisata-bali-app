@@ -54,10 +54,18 @@ const loginUser = async (form, cb) => {
       url: URL + "/login",
       data: form,
     });
-    window.location.reload(false);
-    Swal.fire("Login", "Login Success", "success");
     const data = JSON.stringify(result.data.valUser);
-    Cookies.set("user", data);
+    Swal.fire({
+      title: "Login",
+      text: "Login Success",
+      icon: "success",
+      confirmButtonText: "Oke",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Cookies.set("user", data);
+        window.location.reload(true);
+      }
+    });
     cb(result.data.valUser);
   } catch (error) {
     Swal.fire({
@@ -100,9 +108,17 @@ const logoutUser = async () => {
       confirmButtonText: "Yes, Logout",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        Cookies.remove("user");
-        Swal.fire("Logout!", "You Has Been Logout, Wait a Second We Move You to Home Page", "success");
-        window.location.reload(false);
+        Swal.fire({
+          title: "Logout",
+          text: "Logout Success",
+          icon: "success",
+          confirmButtonText: "Oke",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Cookies.remove("user");
+            window.location.reload(true);
+          }
+        });
       }
     });
   } catch (error) {
@@ -115,4 +131,11 @@ const logoutUser = async () => {
   }
 };
 
-export { getWisata, getCategoryId, getWisataId, loginUser, regisUser, logoutUser };
+export {
+  getWisata,
+  getCategoryId,
+  getWisataId,
+  loginUser,
+  regisUser,
+  logoutUser,
+};

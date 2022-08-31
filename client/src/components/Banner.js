@@ -12,6 +12,7 @@ const Banner = () => {
           </div>
         </div>
       </header>
+      <hr class="border border-dark border-1 opacity-100"/>
     </div>
   );
 };

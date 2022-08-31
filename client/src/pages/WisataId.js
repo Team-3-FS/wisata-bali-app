@@ -84,33 +84,28 @@ const WisataId = () => {
       </div>
 
       <div className="container-fluid px-3 px-lg-5 mt-5">
-        <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+        <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3">
           {getResKomentar.map((result) => {
             const { id, rating, kometar, createdAt, user } = result;
-
+            let tanggal = new Date(createdAt);
             return (
-              <div className="col mb-5" key={id}>
-                <div className="card h-100">
-                  {/* <!-- Product image--> */}
-                  <img
-                    className="card-img-top "
-                    height="150"
-                    src={"http://localhost:3000/" + user.image}
-                    alt="gambar"
-                  />
-                  {/* {console.log(images)} */}
-                  {/* <!-- Product details--> */}
-                  <div className="card-body p-4">
+              <div className="col-md-5 mb-2" key={id}>
+                <div class="d-flex flex-row border rounded">
+                  <div class="p-0 w-25 rounded mx-4">
+                    <img
+                      className=" rounded-circle mx-auto my-2"
+                      height="150"
+                      src={"http://localhost:3000/" + user.image}
+                      alt="gambar"
+                    />
+                  </div>
+                  <div class="mx-5 w-75 border-left pt-4">
                     <div className="text-center">
-                      {/* <!-- Product name--> */}
                       <h5 className="fw-bolder">{user.nama}</h5>
-                      {/* <!-- Product reviews--> */}
                       <div className="d-flex justify-content-center">
                         <Rating initialValue={rating} readonly size="25px" />
                       </div>
-                      <p>{createdAt}</p>
-                      {/* <!-- Product price--> */}
-                      {kometar}
+                      <p>{tanggal.toDateString()}</p>" {kometar} "
                     </div>
                   </div>
                 </div>

@@ -8,7 +8,7 @@ userRoute.get("/", cekUser, UsersController.userPage);
 userRoute.post("/wisata/:id", cekUser, UsersController.detail);
 userRoute.get("/category/:id", cekUser, UsersController.getCategoryById);
 userRoute.post("/wisata/addKomentar/:id", cekUser, UsersController.addKomentar);
-userRoute.put("/wisata/:id", cekUser, UsersController.updateKomentar);
+userRoute.put("/wisata/addKomentar/:id", cekUser, UsersController.updateKomentar);
 userRoute.delete("/wisata/:id", cekUser, UsersController.deleteKomentar);
 userRoute.post("/profile", cekUser, UsersController.getProfile);
 userRoute.put(
