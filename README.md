@@ -18,3 +18,5 @@ npx sequelize-cli model:generate --name image --attributes wisataId:integer,imag
 # Komen Rating
 npx sequelize-cli model:generate --name komenRatig --attributes wisataId:integer,userId:integer,rating:float,kometar:string
 ```
+
+hallo test ini perubahan
